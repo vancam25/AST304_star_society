@@ -67,37 +67,47 @@ def derivs(t,z,m):
     Computes derivatives of position and velocity for Kepler's problem 
     
     Arguments
-        <fill this in>
+        <t> The time
+        
+        <z> This is an array containing the positions of x and y, along with the derivatives of x and y
+        
+        <m> This is the reduced mass of the Earth - Sun system.
+    
     Returns
         numpy array dzdt with components [ dx/dt, dy/dt, dv_x/dt, dv_y/dt ]
     """
     # Fill in the following steps
     # 1. split z into position vector and velocity vector (see total_energy for example)
+    r = z[0:2]
+    v = z[2:4]
     # 2. compute the norm of position vector, and use it to compute the force
+    norm = (r[0]**2 + r[1]**2)**(1/2)
+    
     # 3. compute drdt (array [dx/dt, dy/dt])
+    drdt = v
     # 4. compute dvdt (array [dvx/dt, dvy/dt])
-
+    dvdt = (-m/norm)*r
     # join the arrays
     dzdt = np.concatenate((drdt,dvdt))
     return dzdt
 
-def integrate_orbit(z0,m,tend,h,method='RK4'):
+def integrate_orbit(z0,m,tend,h,a,e,method='RK4'):
     """
     Integrates orbit starting from an initial position and velocity from t = 0 
     to t = tend.
     
     Arguments:
         z0
-            < fill this in >
+            < The initial positions of x and y and the corresponding derivatives >
 
         m
-            < fill this in >
+            < This is the reduced mass of the Earth - Sun system. >
     
         tend
-            < fill this in >
+            < The ending time that the model will run to. >
     
         h
-            < fill this in >
+            < The stepsize being applied to the positions and derivatives. >
     
         method ('Euler', 'RK2', or 'RK4')
             identifies which stepper routine to use (default: 'RK4')
@@ -106,7 +116,11 @@ def integrate_orbit(z0,m,tend,h,method='RK4'):
         ts, Xs, Ys, KEs, PEs, TEs := arrays of time, x postions, y positions, 
         and energies (kin., pot., total) 
     """
-
+    
+    v_p_initial, eps0, Tperiod = set_initial_conditions(a, m, e)
+    v = v_p_initial[3]
+    G = 6.6743*10**-11
+    M = 5.97219*10**24
     # set the initial time and phase space array
     t = 0.0
     z = z0
@@ -121,12 +135,15 @@ def integrate_orbit(z0,m,tend,h,method='RK4'):
     KEs = np.zeros(Nsteps)
     PEs = np.zeros(Nsteps)
     TEs = np.zeros(Nsteps)
-
+    mu = 2*10**30
     # store the initial point
     ts[0] = t
     Xs[0] = z[0]
     Ys[0] = z[1]
     # now extend this with KEs[0], PEs[0], TEs[0]
+    KEs[0] = 1/2*mu*v**2
+    PEs[0] = -G*M*mu/a
+    TEs[0] = KEs[0] + PEs[0]
 
     # select the stepping method
     advance_one_step = integration_methods[method]
@@ -134,10 +151,16 @@ def integrate_orbit(z0,m,tend,h,method='RK4'):
     for step in range(1,Nsteps):
         z = advance_one_step(derivs,t,z,h,args=m)
         # insert statement here to increment t by the stepsize h
-
+        t = t + h
         # store values
         ts[step] = t
         # fill in with assignments for Xs, Ys, KEs, PEs, TEs
+        Xs[step] = z[0]
+        Ys[step] = z[1]
+        Vs[step] = (z[step] - z[step-1])/h
+        KEs[step] = kinetic_energy(Vs[step])
+        PEs[step] = potential_energy(Xs[step],m)
+        TEs[step] = KEs[step] + PEs[step]
     return ts, Xs, Ys, KEs, PEs, TEs
     
 def set_initial_conditions(a, m, e):
@@ -160,18 +183,18 @@ def set_initial_conditions(a, m, e):
         
     # fill in the following lines with the correct formulae
     # total energy per unit mass
-    eps0 = 0.0
+    eps0 = -m/(2*a)
     # period of motion
-    Tperiod = 0.0
+    Tperiod = (math.pi/2**(1/2))*m*e**(-3/2)
 
     # initial position
     # fill in the following lines with the correct formulae
-    x0 = 0.0
+    x0 = a
     y0 = 0.0
 
     # initial velocity is in y-direction; we compute it from the energy
     # fill in the following lines with the correct formulae
     vx0 = 0.0
-    vy0 = 0.0
+    vy0 = (2*e + 2*m/x0)**(1/2)
     
     return np.array([x0,y0,vx0,vy0]), eps0, Tperiod
