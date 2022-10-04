@@ -160,7 +160,7 @@ def integrate_orbit(z0,m,tend,h,a,e,method='RK4'):
         Vs[step] = (z[step] - z[step-1])/h
         KEs[step] = kinetic_energy(Vs[step])
         PEs[step] = potential_energy(Xs[step],m)
-        TEs[step] = KEs[step] + PEs[step]
+        TEs[step] = total_energy(z,m)
     return ts, Xs, Ys, KEs, PEs, TEs
     
 def set_initial_conditions(a, m, e):
