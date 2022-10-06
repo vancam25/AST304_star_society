@@ -1,1 +1,9 @@
-First Test File
+Running orbital_calc_plot_error.py to produce error analysis graphs, and orbital graphs
+
+To run 'orbital_calc_plot_error.py' insure a version of python 3.6 is installed
+Download 'orbital_calc_plot_error.py', 'ode.py', 'updated_kepler.py' in the same directory
+
+!! update 'save_plot_directory' on line 14 in orbital_calc_plot_error.py to a relavent directory on your machine !!
+
+Run 'orbital_calc_plot_error.py' in a python terminal
+
