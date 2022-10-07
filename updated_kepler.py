@@ -1,12 +1,41 @@
 ########################################################################
-# Team <your team name>: <names>
+# Team Flat Star Society: Hannah Sullivan, Steven Vancamp, Abram Anderson, Sanskriti Verma
 # AST 304, Fall 2022
 # Michigan State University
-# This header (minus this line) should go at the top of all code files.
 ########################################################################
 
 """
-<Description of this module goes here: what it does, how it's used.>
+Description:
+
+This file is used to calculate the energies, the derivatives, integrate the orbit with initial conditions, and finally set the initial conditions 
+for the Kepler's Problem of two orbiting particles. 
+The module uses numpy, math, and integration methods from the script file 'ode.py'. 
+Import the necessary libraries when running the code. 
+
+kinetic_energy() is a function that takes the velocity (as an array) of an orbiting body to caluclate the kinetic energy. 
+Returns the kinetic energy per unit mass as a float value in unit [J].
+
+potential_energy() is a function that takes the position vector (array, float values) and total mass of the system (float value) to 
+calculate the potential energy of the system. Returns the potential energy per unit mass as a float in unit [J].
+
+total_energy() is a function that calculates the total energy of the system. It takes z, compound position and velocity vector( array), 
+in respective units, as well as m, total mass of the system, as a float, in units [solar mass'']. 
+Returns total energy per unit mass; float, in units [J].
+
+derivs() is a function that computes the derivatives of position and velocity for Kepler's problem. 
+Accepts arguments t (time), z (array of positions and position derivatives aka velocity), and m (reduced mass of system).
+Returns a numpy array named dzdt of position derivatives and velocity derivatives.
+
+integrate_orbit() is a function to integrate the orbit of the two orbiting paraticles. 
+Starts from initial position and velocity from t = 0 to a specified time.
+The function accepts arguments z0 (initial position and derivatives), m (reduced mass of system), tend (speficied end time), 
+h (step size), and method (identifies which integration method to solve with).
+Returns arrays of time, positions, and energies. 
+    
+set_initial_conditions() is a function that sets the initial conditions of the orbit. It is specifically chosen for initial conditions to be zero.
+Accepts the arguements a (semu-major acis in AU), m (total mass in solar units), and e (eccentricity of the orbit). 
+Returns initial position and velocity, energy, and period. 
+   
 """
 
 import numpy as np
