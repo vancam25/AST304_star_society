@@ -1,11 +1,12 @@
 ########################################################################
 # Team Flat Star Society: Hannah Sullivan, Steven Vancamp, Abram Anderson, Sanskriti Verma
-# AST 304, Fall 2020
+# AST 304, Fall 2022
 # Michigan State University
 ########################################################################
 
 """
 Description
+
 This module is the creation of three integration methods- Forward Euler (fEuler), Runge-Kutta 2nd Order (rk2), 
 and Runge-Kutta 4th order (rk4). These functions will be used to estimate the slope or path at a time of t+h, 
 with h being the step-size from our initial value of t. 
@@ -15,19 +16,31 @@ z(t_h) = z(t) + h*(dz/dt) evaluated at t (omitting higher terms). dz/dt = f(t,z)
 so that means that z(t+h) approximates to z+h*f(t,z) at time t. The same goes for the other two methods, except 
 we evaluate them at higher orders of the Taylor Expansion for more accuracy. 
 
-The module can be used to call the functions defined below. Each function works by entering a function f, 
-the time we're looking to integrate over t, the initial conditions z (which may change as it is dependant on t), and
-the step size away from our value of t is h. There are additional arguements you may pass if your function needs them, 
-and they can be passed last as a tuple of 'args = (arguments here)'. 
 
-Each function will return znew with different accuracies, which reflect the different order of integration that we are using. 
+fEuler() is a function that caluclates the Forward Euler method of integration via equation dz/dt = f(t+h,z). 
+This equation has been expanded into a Taylor expansion. This is a first order method, though will have more errorsdue to the step size.
+The integration error only goes down by 2 as well. 
+Takes arguements f (a function) that relies on time and conditions z, z (initial conditions), t (time length), and any other needed additional arguements. 
+Returns znew = z(t+h).
+You can call the function as x = fEuler(function, time, initial condition, time step h, args =(additional arguements)). 
 
-To use these functions, make sure this file is in the same location as your notebook. Import the functions from this file.
-To actually use the functions, you can call the function as:
-x = fEuler(function, time, initial condition, time step h, args =(additional arguements)). 
-rk2 and rk4 can be called and stored as variables in much of the same way. 
+rk2() is a function that calculates the Runge-Kutta method of integration at the second order (higher Taylor expansion). 
+Using Forward Euler, we take a step to the midpoint between t and t+h and calculate zp, an estimate of the solutionat t + h/2. 
+Takes acceptible arguements of f (a function), z (initial conditions), t (time length), and any additional aruements as a tuple. 
+Returns znew = z(t+h). 
+You can call the function as x = rk2(function, time, initial condition, time step h, args =(additional arguements)).
+    
+rk4() is a function that calculates 4th order Runge-Kutta integration.
+This method created a weighted approximation from different averages and peeks at the slope at the midpoints in order to create the solution. 
+Takes acceptible arguments of f (function), z (initial conditions), t (time length), and any additional arguements as a tuple args=(add. arguements).
+Returns znew = z(t+h).
+You can call the function as x = rk4(function, time, initial condition, time step h, args=(additional arguements).
+ 
+To use these functions, make sure this file is in the same location as your notebook and other needed script files. 
+Import the functions from this file. To actually use the functions, you can call and store the functions as described above.
 
 """
+
 
 def fEuler(f,t,z,h,args=()):
     """
@@ -48,13 +61,13 @@ def fEuler(f,t,z,h,args=()):
             function that contains the RHS of the equation dz/dt = f(t,z,...)
     
         t
-            time length that we are evaluating over. Typically linspace. 
+            time length that we are evaluating over. Typically linspace.
             
         z
-            initial condition of z at time t. 
+            initial condition of z at time t.
         
         h
-            time step h that we will be looking for the value of. 
+            time step h that we will be looking for the value of.
     
         args (tuple, optional)
             additional arguments to pass to f
@@ -150,7 +163,7 @@ def rk4(f,t,z,h,args=()):
     The function takes a function f that relies on time and conditions z, (the RHS) the time length, 
     our initial conditions z, and any additional arugments. 
     
-    You can call the function as x = fEuler(function, time, initial condition, time step h, args =(additional arguements)).
+    You can call the function as x = fEuler(function, time, initial condition, time step h, args=(additional arguements)).
     
     Arguments
         f(t,z,...)
