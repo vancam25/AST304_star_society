@@ -8,13 +8,15 @@ Implement & Test EOS ("eos.py", "test_eos.py") -> Steven
 
 Implement Structure Equations for EOS ("structure.py") -> 
 
-Setting Central Boundary Conditions ("structure.py") -> 
+Setting Central Boundary Conditions ("structure.py") -> Hannah 
 
-Construct the Integration Loop ("structure.py") -> 
+Construct the Integration Loop ("structure.py") -> Hannah + someone else if possible (H has started integrate function) 
   Test Integration -> 
 
 Make Mass-Radius Table -> Steven
 
 Compare to Observations -> Sans
 
-Final WriteUp -> Steven + someone else if its longer (but it dosen't look like it should be long)
+Final WriteUp -> Steven + Hannah (will help if it's longer than expected (but it dosen't look like it should be long)) 
+
+Upkeeping the readme -> Hannah 
