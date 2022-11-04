@@ -10,7 +10,7 @@ Implement Structure Equations for EOS ("structure.py") ->
 
 Setting Central Boundary Conditions ("structure.py") -> Hannah 
 
-Construct the Integration Loop ("structure.py") -> Hannah + someone else if possible (H has started integrate function) 
+Construct the Integration Loop ("structure.py") -> Hannah + someone else if possible (Has started lengthscale and integrate functions) 
   Test Integration -> 
 
 Make Mass-Radius Table -> Steven
