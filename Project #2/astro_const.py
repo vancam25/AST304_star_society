@@ -15,7 +15,7 @@ import astropy.units as _au
 from numpy import pi
 fourpi = 4.0*pi
 mue = 2.0
-fermi_energy = 0.3
+fermi_energy = 0.3 # found online
 
 # solar mass, radius, luminosity
 Msun = _ac.M_sun.value
