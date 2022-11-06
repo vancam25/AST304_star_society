@@ -16,6 +16,7 @@ from numpy import pi
 fourpi = 4.0*pi
 mue = 2.0
 fermi_energy = 0.3 # found online
+Ke = 10036120.87 # calculated and re-arranged from equation 1
 
 # solar mass, radius, luminosity
 Msun = _ac.M_sun.value
@@ -60,7 +61,8 @@ if __name__ == "__main__":
         ("year",year,"s"),
         ("Stefan-Boltzmann constant",sigmaSB,"W m**-2 K**-4"),
         ("mue", mue, ""),
-        ("Fermi Energy", fermi_energy, "MeV")
+        ("Fermi Energy", fermi_energy, "MeV"),
+         ("Ke", Ke, "")
         
     ]
     
