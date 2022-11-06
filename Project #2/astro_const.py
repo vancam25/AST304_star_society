@@ -15,6 +15,7 @@ import astropy.units as _au
 from numpy import pi
 fourpi = 4.0*pi
 mue = 2.0
+fermi_energy = 0.3
 
 # solar mass, radius, luminosity
 Msun = _ac.M_sun.value
@@ -58,7 +59,9 @@ if __name__ == "__main__":
         ("astronomical unit",au,"m"),
         ("year",year,"s"),
         ("Stefan-Boltzmann constant",sigmaSB,"W m**-2 K**-4"),
-        ("mue", mue, "")
+        ("mue", mue, ""),
+        ("Fermi Energy", fermi_energy, "MeV")
+        
     ]
     
     
