@@ -1,5 +1,5 @@
 ########################################################################
-# Team <your team name>: <names>
+# Team <Flat_Star_Society>: <names>
 # AST304, Fall 2020
 # Michigan State University
 ########################################################################
@@ -9,9 +9,9 @@
 """
 
 import numpy as np
-from eos import # fill this in
-from ode import # fill this in
-from astro_const import # fill this in
+#from eos import # fill this in
+#from ode import # fill this in
+#from astro_const import # fill this in
 
 def stellar_derivatives(m,z,mue):
     """
@@ -30,11 +30,15 @@ def stellar_derivatives(m,z,mue):
         dzdm (array)
             Lagrangian derivatives dr/dm, dP/dm
     """
-    
+    r = z[0:2]
+    row = z[2:4]
     dzdm = np.zeros_like(z)
 
     # evaluate dzdm
-    
+    drdm = 1/(4*np.pi*r**2*row)
+    dPdm = (6.6743*10**-11*m/4*np.pi*r**4)
+    dxdm = np.concatenate((dmdr,dPdr))
+
     return dzdm
 
 def central_values(Pc,delta_m,mue):
@@ -56,6 +60,8 @@ def central_values(Pc,delta_m,mue):
     """
     z = np.zeros(2)
     # compute initial values of z = [ r, p ]
+    z[0] = Pc
+    z[1] = ((3*delta_m)/(4*np.pi*Pc))**(1/3)
     return z
     
 def lengthscales(m,z,mue):
