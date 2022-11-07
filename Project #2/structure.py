@@ -1,17 +1,19 @@
 ########################################################################
-# Team <Flat_Star_Society>: <names>
-# AST304, Fall 2020
+# Team Flat Star Society: Hannah Sullivan, Steven Vancamp, Abram Anderson, Sanskriti Verma
+# AST304, Fall 2022
 # Michigan State University
 ########################################################################
 
+
+#####FILL OUT DESCRIPTION OF FUNCTIONS ######
 """
 <Description of this module goes here: what it does, how it's used.>
 """
 
 import numpy as np
-#from eos import # fill this in
-#from ode import # fill this in
-#from astro_const import # fill this in
+from eos import pressure, density
+from ode import fEuler, rk2, rk4
+import astro_const as ac 
 
 def stellar_derivatives(m,z,mue):
     """
@@ -32,13 +34,15 @@ def stellar_derivatives(m,z,mue):
     """
     r = z[0:2]
     row = z[2:4]
+    
     dzdm = np.zeros_like(z)
-
+    
     # evaluate dzdm
+    
     drdm = 1/(4*np.pi*r**2*row)
-    dPdm = (6.6743*10**-11*m/4*np.pi*r**4)
-    dxdm = np.concatenate((dmdr,dPdr))
-
+    dPdm = (ac.G*m/4*np.pi*r**4)
+    dzdm = np.concatenate((drdm,dPdm))
+    
     return dzdm
 
 def central_values(Pc,delta_m,mue):
@@ -59,9 +63,26 @@ def central_values(Pc,delta_m,mue):
             central values of radius and pressure (units = ?)
     """
     z = np.zeros(2)
+    
     # compute initial values of z = [ r, p ]
-    z[0] = Pc
-    z[1] = ((3*delta_m)/(4*np.pi*Pc))**(1/3)
+    
+    #From the document: 
+    #m = delta_m
+    #P = Pc(m)
+    #p(m) = p(Pc)
+    #r(m) = ((3*m)/(4*np.pi*p))**(1/3)
+    
+    #FROM ABRAM:
+    #z[0] = Pc
+    #z[1] = ((3*delta_m)/(4*np.pi*Pc))**(1/3)
+    
+    
+    rho_i = eos.density(Pc,mue)
+    r_i = ((3*m)/(4*ac.pi*rho_i))**(1/3)
+    
+    z[0] = r_i
+    z[1] = Pc
+    
     return z
     
 def lengthscales(m,z,mue):
@@ -80,9 +101,13 @@ def lengthscales(m,z,mue):
         z/|dzdm| (units = ?)
     """
 
-    # fill this in
-    pass
-    return
+    ##### COME BACK TO; NEED TO USE MUE? ###########
+    
+    H_r = 4*ac.pi*m
+    H_p = (4*ac.pi*(z[0]**4)*z[1])/(ac.G*m)
+    
+    #Returns z/|dzdm| (units = ?)
+    return [(H_r, H_p)]
     
 def integrate(Pc,delta_m,eta,xi,mue,max_steps=10000):
     """
@@ -113,7 +138,8 @@ def integrate(Pc,delta_m,eta,xi,mue,max_steps=10000):
     r_step = np.zeros(max_steps)
     p_step = np.zeros(max_steps)
     
-    # set starting conditions using central values
+    # set starting conditions using central values 
+    z = central_values(Pc, delta_m, mue)
     
     Nsteps = 0
     for step in range(max_steps):
@@ -122,11 +148,28 @@ def integrate(Pc,delta_m,eta,xi,mue,max_steps=10000):
         # are we at the surface?
         if (pressure < eta*Pc):
             break
-        # store the step
+            
+        # store the step, aka current values of m, r, p
+        m_step[Nstep] = delta_m
+        r_step[Nstep] = radius
+        p_step[Nstep] = pressure
         
         # set the stepsize
+        # remember xi: The stepsize is set to be xi*min(p/|dp/dm|, r/|dr/dm|
+        #might change to xi[step]
+        
+        l = lengthscale(m_step[step], z, mue)
+        stepsize = xi*min(pressure/l[1], radius/l[0])
         
         # take a step
+        # USE RK4
+        
+        z[step] = rk4(stellar_derivatives, delta_m, z[step-1], stepsize, mue) 
+        
+        delta_m = m_step[Nstep] + stepsize
+        
+        radius = z[0]
+        pressure = z[1]
         
         # increment the counter
         Nsteps += 1
@@ -145,11 +188,16 @@ def pressure_guess(m,mue):
         m
             mass of white dwarf (units are ?)
         mue
-            mean electron mass
+            mean electron mass 
     
     Returns
         P
             guess for pressure
     """
     # fill this in
+    #take stuff from integrate? Use pressure eq (16???) from instructions document
+    #do we need all values of M from m_step??? no idea <3 
+    
+    Pguess = (ac.G**5/ac.Ke**4)*(M*mue**2)**10/3
+    
     return Pguess
