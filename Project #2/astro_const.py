@@ -16,7 +16,7 @@ from numpy import pi
 fourpi = 4.0*pi
 mue = 2.0
 fermi_energy = 0.3 # found online
-Ke = 10036120.87 # calculated and re-arranged from equation 1
+# Ke = 10036120.87 # calculated and re-arranged from equation 1
 
 # solar mass, radius, luminosity
 Msun = _ac.M_sun.value
@@ -37,6 +37,8 @@ pc = _ac.pc.value
 au = _ac.au.value
 year = _au.year.to(_au.second)
 sigmaSB = _ac.sigma_sb.value
+
+K_e = (1/5) * (3/(8*pi))**(2/3) * ((h**2)/m_e) * (1/(m_u**(5/3)))
 
 
 if __name__ == "__main__":

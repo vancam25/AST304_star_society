@@ -22,9 +22,9 @@ def pressure(rho, mue):
         electron degeneracy pressure (Pascal)
     """
     
-    # replace following lines with body of routine
-    p = 0.0*rho
-    return p
+    p = ac.K_e * (rho/mue)**(5/3) # Eq.(1) of "instructions-1.pdf"
+    
+    return(p)
 
 def density(p, mue):
     """
@@ -38,6 +38,6 @@ def density(p, mue):
         mass density (kg/m**3)
     """
     
-    # replace following lines with body of routine
-    rho = 0.0*p
-    return rho
+    rho = (p/ac.K_e)**(3/5) * mue # Eq.(1) of "instructions-1.pdf"
+    
+    return(rho)
