@@ -61,7 +61,7 @@ def central_values(Pc, delta_m, mue):
             Central pressure; units [Pa]
             
         delta_m (float):
-            Core mass; units [kg]
+            "Core" mass; units [kg]
             
         mue (float):
             Nucleon/electron ratio
@@ -133,7 +133,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
         Pc (float):
             Central pressure; units [Pa]
             
-        delta_m (float):
+        core_mass (float):
             Core mass; units [kg]
             
         eta (float):
@@ -161,9 +161,10 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
     p_step = np.zeros(max_steps)
     
     # set starting conditions using central values 
-    z = central_values(Pc, delta_m, mue)
+    z = central_values(Pc, delta_m*(10**(-4)), mue)
     
     Nsteps = 0
+    max_step_reached = 0
     
     for step in range(max_steps):
         radius = z[0]
@@ -172,7 +173,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
         # are we at the surface?
         if (pressure < eta*Pc):
             break
-            
+           
         # store the step, aka current values of m, r, p
         m_step[step] = delta_m
         r_step[step] = radius
@@ -202,9 +203,10 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
         
     # if the loop runs to max_steps, then signal an error
     else:
-        raise Exception('too many iterations')
+        max_step_reached = 1
+        # raise Exception('too many iterations')
         
-    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps]
+    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], max_step_reached
 
 def pressure_guess(m, mue):
     """
@@ -214,10 +216,10 @@ def pressure_guess(m, mue):
     
     Arguments:
         m (float): 
-            Current mass value; units [kg]
+            Total mass value; units [kg]
         
         mue (float):
-            mean electron mass 
+            Mean electron mass 
     
     Returns:
         P_guess (float):
