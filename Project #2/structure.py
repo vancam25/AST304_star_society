@@ -35,12 +35,6 @@ def stellar_derivatives(m, z, mue):
         dzdm (array):
             Lagrangian derivatives dr/dm, dP/dm; like [dr/dm, dP/dm]
     """
-    # r = z[0:2]
-    # row = z[2:4]
-    
-    # dzdm = np.zeros_like(z)
-    
-    # evaluate dzdm
     
     rho = eos.density(z[1], mue) # current density
     
@@ -72,19 +66,6 @@ def central_values(Pc, delta_m, mue):
     """
     z = np.zeros(2)
     
-    # compute initial values of z = [ r, p ]
-    
-    #From the document: 
-    #m = delta_m
-    #P = Pc(m)
-    #p(m) = p(Pc)
-    #r(m) = ((3*m)/(4*np.pi*p))**(1/3)
-    
-    #FROM ABRAM:
-    #z[0] = Pc
-    #z[1] = ((3*delta_m)/(4*np.pi*Pc))**(1/3)
-    
-    
     rho_i = eos.density(Pc,mue)
     r_i = ((3 * delta_m) / (4 * ac.pi * rho_i))**(1/3) # Eq.(9) of "instructions-1.pdf"
     
@@ -112,8 +93,6 @@ def lengthscales(m, z, mue):
         z/|dzdm| (array):
             Current lengthscale for radius and pressure; like [Hr, Hp]
     """
-
-    ##### COME BACK TO; NEED TO USE MUE? ###########
     
     rho = eos.density(z[1], mue)
     
@@ -124,7 +103,7 @@ def lengthscales(m, z, mue):
     
     return(Hr_Hp)
     
-def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
+def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000, err_max_step = False):
     """
     Description:
         Integrates the scaled stellar structure equations
@@ -148,7 +127,11 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
         max_steps (int):
             solver will quit and throw error if this more than max_steps are 
             required (default is 10000)
-                        
+            
+        err_max_step (bool):
+            boolean, when true dont through exception if the number of steps in the 
+            integration loop 'Nsteps' has surpased 'max_steps'
+            
     Returns:
         m_step, r_step, p_step 
             arrays containing mass coordinates, radii and pressures during 
@@ -180,12 +163,6 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
         p_step[step] = pressure
         
         # set the stepsize
-        # remember xi: The stepsize is set to be xi*min(p/|dp/dm|, r/|dr/dm|
-        #might change to xi[step]
-        
-        # l = lengthscales(m_step[step], z, mue)
-        # stepsize = xi*min(pressure/l[1], radius/l[0])
-        
         stepsize = xi * min(lengthscales(m_step[step], z, mue))
         
         # take a step
@@ -195,16 +172,16 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000):
         
         delta_m = m_step[step] + stepsize
         
-        # radius = z[0]
-        # pressure = z[1]
-        
         # increment the counter
         Nsteps += 1
         
     # if the loop runs to max_steps, then signal an error
     else:
-        max_step_reached = 1
-        # raise Exception('too many iterations')
+        if err_max_step:
+            max_step_reached = 1
+        else:
+            max_step_reached = 1
+            raise Exception('too many iterations')
         
     return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], max_step_reached
 
@@ -225,9 +202,6 @@ def pressure_guess(m, mue):
         P_guess (float):
             Guess for pressure; units [Pa]
     """
-    # fill this in
-    #take stuff from integrate? Use pressure eq (16???) from instructions document
-    #do we need all values of M from m_step??? no idea <3 
     
     P_guess = (ac.G**5 / ac.K_e**4) * (m * mue**2)**(10/3) # Eq.(16) of "instructions-1.pdf"
     

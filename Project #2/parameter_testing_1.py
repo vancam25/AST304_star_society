@@ -85,7 +85,7 @@ def test_routine(M_test, delta_m, eta, xi):
     
     Pc = stc.pressure_guess(M_test, ac.mue) # make an initial guess of central pressure 'Pc'
     
-    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=10000) # run integration loop
+    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=10000, err_max_step=True) # run integration loop
     
     m_r_p_array = np.array([m_res[-1], r_res[-1], p_res[-1], max_step_reached]) # save the final value  from the results of the integration loop
     
