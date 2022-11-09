@@ -57,7 +57,7 @@ def sample_param_normal(sample_size, mu, sigma):
     
     return(z_0, z_1)
 
-def test_routine(M_test, delta_m, eta, xi):
+def test_routine(M_test, delta_m, eta, xi, err_max_step = True):
     '''
     Description:
         runs the integration loop with the parameters 'delta_m', 'eta', 'xi' and a 'Pc' as set 
@@ -85,7 +85,7 @@ def test_routine(M_test, delta_m, eta, xi):
     
     Pc = stc.pressure_guess(M_test, ac.mue) # make an initial guess of central pressure 'Pc'
     
-    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=10000, err_max_step=True) # run integration loop
+    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=10000, err_max_step=err_max_step) # run integration loop
     
     m_r_p_array = np.array([m_res[-1], r_res[-1], p_res[-1], max_step_reached]) # save the final value  from the results of the integration loop
     

@@ -39,16 +39,16 @@ ax1.set_ylabel('Final mass [Solar Masses]')
 ax1.set_title('Final mass as a function of xi', pad=20)
 ax1.legend()
 
-ax3.scatter(xi_sample_1_indep.iloc[:,1], xi_sample_1.iloc[:,2]/ac.Msun, c='b', label='Run 1')
-ax3.scatter(xi_sample_2_indep.iloc[:,1], xi_sample_2.iloc[:,2]/ac.Msun, c='r', label='Run 2')
+ax3.scatter(xi_sample_1_indep.iloc[:,1], xi_sample_1.iloc[:,2], c='b', label='Run 1')
+ax3.scatter(xi_sample_2_indep.iloc[:,1], xi_sample_2.iloc[:,2], c='r', label='Run 2')
 
 ax3.set_xlabel('xi')
 ax3.set_ylabel('Final radius [m]')
 ax3.set_title('Final radius as a function of xi', pad=20)
 ax3.legend()
 
-ax5.scatter(xi_sample_1_indep.iloc[:,1], xi_sample_1.iloc[:,3]/ac.Msun, c='b', label='Run 1')
-ax5.scatter(xi_sample_2_indep.iloc[:,1], xi_sample_2.iloc[:,3]/ac.Msun, c='r', label='Run 2')
+ax5.scatter(xi_sample_1_indep.iloc[:,1], xi_sample_1.iloc[:,3], c='b', label='Run 1')
+ax5.scatter(xi_sample_2_indep.iloc[:,1], xi_sample_2.iloc[:,3], c='r', label='Run 2')
 
 ax5.set_xlabel('xi')
 ax5.set_ylabel('Final pressure [Pa]')
@@ -65,16 +65,16 @@ ax2.set_ylabel('Final mass [Solar Masses]')
 ax2.set_title('Final mass as a function of eta', pad=20)
 ax2.legend()
 
-ax4.scatter(eta_sample_1_indep.iloc[:,1], eta_sample_1.iloc[:,2]/ac.Msun, c='b', label='Run 1')
-ax4.scatter(eta_sample_2_indep.iloc[:,1], eta_sample_2.iloc[:,2]/ac.Msun, c='r', label='Run 2')
+ax4.scatter(eta_sample_1_indep.iloc[:,1], eta_sample_1.iloc[:,2], c='b', label='Run 1')
+ax4.scatter(eta_sample_2_indep.iloc[:,1], eta_sample_2.iloc[:,2], c='r', label='Run 2')
 
 ax4.set_xlabel('eta')
 ax4.set_ylabel('Final radius [m]')
 ax4.set_title('Final radius as a function of eta', pad=20)
 ax4.legend()
 
-ax6.scatter(eta_sample_1_indep.iloc[:,1], eta_sample_1.iloc[:,3]/ac.Msun, c='b', label='Run 1')
-ax6.scatter(eta_sample_2_indep.iloc[:,1], eta_sample_2.iloc[:,3]/ac.Msun, c='r', label='Run 2')
+ax6.scatter(eta_sample_1_indep.iloc[:,1], eta_sample_1.iloc[:,3], c='b', label='Run 1')
+ax6.scatter(eta_sample_2_indep.iloc[:,1], eta_sample_2.iloc[:,3], c='r', label='Run 2')
 
 ax6.set_xlabel('eta')
 ax6.set_ylabel('Final pressure [Pa]')
@@ -84,3 +84,4 @@ ax6.legend()
 fig.tight_layout()
 
 fig.savefig(final_plot_dir+'ParameterAnalysis.pdf')
+fig.savefig(final_plot_dir+'ParameterAnalysis.svg')
