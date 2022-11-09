@@ -37,7 +37,7 @@ Where $P$ is the stellar pressure at the current mass coordinate. $P_{c}$ is the
 
 Parameter Space Exploration for $\xi$ and `eta`
 
-
+![ParameterAnalysis](https://user-images.githubusercontent.com/90724182/200951085-cb43e732-0d35-4be9-a3d9-65a2bbb6018f.svg)
 
 The range where the integration is insentive to the choice of $\xi$ is $0\lessapprox\xi\lessapprox0.5$. 
 So we can safely choose $\xi$ to be $0.1$. The range where the integration is insensitive to the 
