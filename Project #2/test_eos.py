@@ -1,3 +1,10 @@
+########################################################################
+# Team Flat Star Society: Hannah Sullivan, Steven Vancamp, Abram Anderson, Sanskriti Verma
+# AST304, Fall 2022
+# Michigan State University
+########################################################################
+
+
 # unit test for equation of state
 # do not alter this file
 
