@@ -35,14 +35,28 @@ $$ P<\eta P_{c} \tag{2} $$
 
 Where $P$ is the stellar pressure at the current mass coordinate. $P_{c}$ is the stars central pressure.
 
-Parameter Space Exploration for $\xi$ and `eta`
-
-![ParameterAnalysis](https://user-images.githubusercontent.com/90724182/200951085-cb43e732-0d35-4be9-a3d9-65a2bbb6018f.svg)
+### <p align="center">Figure 1 Parameter Space Exploration for $\xi$ and $\eta$</p>
+![ParameterAnalysis](https://user-images.githubusercontent.com/90724182/201183045-ead2bbf3-a862-4015-b5ab-ae34640c3caf.svg)
 
 The range where the integration is insentive to the choice of $\xi$ is $0\lessapprox\xi\lessapprox0.5$. 
 So we can safely choose $\xi$ to be $0.1$. The range where the integration is insensitive to the 
 choice of $\eta$ is $0\lessapprox\eta\lessapprox0.1^{-5}$$
 
 ## Mass-Radius Table
+
+Now that we know what a good choice for $\xi$ and $\eta$ are we can show the relation between white dwarf mass and radius. This is shown on Table (1).
+
+We found this relation by supplying our routine with a desired total mass $M_{want}$. From this we can make an estimate for $P_{c}$ using Eq.(3), which comes from virial relations.
+
+$$ P_{c}^{guess} = (\frac{G^{5}}{K_{e}^{4}})(M\mu_{e}^{2})^{\frac{10}{3}} \tag{3} $$
+
+Where $\mu_{3}$ is the nucleon-electron ration.
+
+After making this guess we run the integration loop supplying our found values for $\xi$, $\eta$, and $P_{c}$. We choose a maximum number of integration steps to be 100000 since this allows the time for the integration to converge and our computers were able to handle it. A 'core' mass is also supplied, and is chosen to be a small fraction ($10^{-4}$$) of the desired mass, this gives a lower bound for the integration. 
+
+With this the integration runs, until the condition specified by Eq.(2) is met and the 'edge' of the white dwarfs atmosphere is reached. The results of these runs are shown in Table (1).
+
+### <p align="center">Table 1 Mass-Radius Relationship for White Dwarves</p>
+Include image of table here (drag file onto page here, it will auto link)
 
 ## Comparison To Observations
