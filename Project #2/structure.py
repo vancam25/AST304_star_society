@@ -4,10 +4,28 @@
 # Michigan State University
 ########################################################################
 
-
-#####FILL OUT DESCRIPTION OF FUNCTIONS ######
 """
-<Description of this module goes here: what it does, how it's used.>
+Description: 
+
+stellar_derivatives: A function that takes the mass value, radius and pressure values, 
+    and the Nucelon/electron ratio mue to calculate Lagrangian derivatives [dr/dm, dP/dm].
+    
+central_values: A function (consisting of inputs central pressure Pc, core mass m, and mue
+    that constructs the boundary conditions at the edge of a small, constant density core of mass 
+    delta_m with central pressure P_c.
+    
+lengthscales: A function for the radial length scale H_r and the pressure length H_P. 
+    Takes inputs of current mass value m, current radius and pressure values in array z, 
+    and mue. 
+            
+integrate: A function that integrates the scaled stellar structure equations. It takes arguements
+    of central pressure Pc, core mass delta_m, eta, xi, mue, max_steps, and err_max_steps.
+    Returns an array of mass coordinates and raidii and pressure values from integration. 
+
+
+pressure_guess: A function that guesses/returns the pressure based on inputs of the total mass value 
+    and mue.
+
 """
 
 import numpy as np
@@ -112,7 +130,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000, err_max_step = False):
         Pc (float):
             Central pressure; units [Pa]
             
-        core_mass (float):
+        delta_m (float):
             Core mass; units [kg]
             
         eta (float):
