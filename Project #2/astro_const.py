@@ -38,7 +38,7 @@ au = _ac.au.value
 year = _au.year.to(_au.second)
 sigmaSB = _ac.sigma_sb.value
 
-K_e = (1/5) * (3/(8*pi))**(2/3) * ((h**2)/m_e) * (1/(m_u**(5/3)))
+Ke = (1/5) * (3/(8*pi))**(2/3) * ((h**2)/m_e) * (1/(m_u**(5/3)))
 
 
 if __name__ == "__main__":
