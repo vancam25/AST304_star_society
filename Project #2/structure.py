@@ -8,9 +8,10 @@
 Description: 
 
 stellar_derivatives: A function that takes the mass value, radius and pressure values, 
-    and the Nucelon/electron ratio mue to calculate Lagrangian derivatives [dr/dm, dP/dm].
+    and the Nucelon/electron ratio mue to calculate the Lagrangian derivatives of radius and
+    pressure per coordinate mass offset [dr/dm, dP/dm].
     
-central_values: A function (consisting of inputs central pressure Pc, core mass m, and mue
+central_values: A function (consisting of inputs central pressure Pc, core mass m, and mue)
     that constructs the boundary conditions at the edge of a small, constant density core of mass 
     delta_m with central pressure P_c.
     
@@ -24,7 +25,7 @@ integrate: A function that integrates the scaled stellar structure equations. It
 
 
 pressure_guess: A function that guesses/returns the pressure based on inputs of the total mass value 
-    and mue.
+    and mue. Follows from virial equations and mass-radii relations. 
 
 """
 
