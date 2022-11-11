@@ -4,29 +4,10 @@
 # Michigan State University
 ########################################################################
 
+
+#####FILL OUT DESCRIPTION OF FUNCTIONS ######
 """
-Description: 
-
-stellar_derivatives: A function that takes the mass value, radius and pressure values, 
-    and the Nucelon/electron ratio mue to calculate the Lagrangian derivatives of radius and
-    pressure per coordinate mass offset [dr/dm, dP/dm].
-    
-central_values: A function (consisting of inputs central pressure Pc, core mass m, and mue)
-    that constructs the boundary conditions at the edge of a small, constant density core of mass 
-    delta_m with central pressure P_c.
-    
-lengthscales: A function for the radial length scale H_r and the pressure length H_P. 
-    Takes inputs of current mass value m, current radius and pressure values in array z, 
-    and mue. 
-            
-integrate: A function that integrates the scaled stellar structure equations. It takes arguements
-    of central pressure Pc, core mass delta_m, eta, xi, mue, max_steps, and err_max_steps.
-    Returns an array of mass coordinates and raidii and pressure values from integration. 
-
-
-pressure_guess: A function that guesses/returns the pressure based on inputs of the total mass value 
-    and mue. Follows from virial equations and mass-radii relations. 
-
+<This file sets the derivative functions being used during the integration loop. The derivatives are set in an array which use the EOS.py file for values within the equations. The boundary conditions for these derivatives are then set using values from both sides of the boundaries. The integration loop can then proceed and integrates until a set number of steps utilizing the values of xi and eta. This gives an array of values containing mass, radius, and pressures at specified coordinates. A function to estimate the central pressure is also contained here that uses the virial theorem and mass-radius relations.>
 """
 
 import numpy as np
@@ -85,7 +66,7 @@ def central_values(Pc, delta_m, mue):
     """
     z = np.zeros(2)
     
-    rho_i = eos.density(Pc,mue) # calculate the density of the "core"
+    rho_i = eos.density(Pc,mue)
     r_i = ((3 * delta_m) / (4 * ac.pi * rho_i))**(1/3) # Eq.(9) of "instructions-1.pdf"
     
     z[0] = r_i
@@ -131,7 +112,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000, err_max_step = False):
         Pc (float):
             Central pressure; units [Pa]
             
-        delta_m (float):
+        core_mass (float):
             Core mass; units [kg]
             
         eta (float):
@@ -163,7 +144,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000, err_max_step = False):
     p_step = np.zeros(max_steps)
     
     # set starting conditions using central values 
-    z = central_values(Pc, delta_m, mue)
+    z = central_values(Pc, delta_m*(10**(-4)), mue)
     
     Nsteps = 0
     max_step_reached = 0

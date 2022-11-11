@@ -1,6 +1,6 @@
 ########################################################################
-# Team <your team name>: <names>
-# AST304, Fall 2020
+# Team Flat Star Society: Hannah Sullivan, Steven Vancamp, Abram Anderson, Sanskriti Verma
+# AST304, Fall 2022
 # Michigan State University
 ########################################################################
 

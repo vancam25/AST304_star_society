@@ -5,16 +5,7 @@
 ########################################################################
 
 """
-Description: 
-
-pressure: A function that calculates the electron degeneracy pressure based on 
-    inputs rho (mass density) and mue (baryon/electron ratio). Follows from 
-    our first equation in "instructions-1.pdf".
-
-density: A function that computes the mass density of our white dwarf star. 
-    Takes inputs of electron degeneracy pressure rho and baryon/electron ratio mue. 
-    Follows from a restructuring of our first equation in "instructions-1.pdf".
-
+<This file defines functions that calculate the pressures and densities being used in our ODE solver.>
 """
 
 import astro_const as ac
