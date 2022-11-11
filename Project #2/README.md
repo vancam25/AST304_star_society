@@ -30,10 +30,9 @@ Contents
 Report/closeout
 ---------------
 
+1. As mentioned in the contents, file `Project_2_WriteUp.md` is where you can find our report and writeup of the project. 
 
-
-1. Use your file space on Teams for writing your report. Make sure you address the questions in the instructions in your report.
-2. Modify this README file by replacing instructions from me with your  instructions on how to run the code.
+2. How to run our code: (## FINISH ##)
    
 Resources
 ---------
@@ -42,8 +41,3 @@ S. R. G. Joyce, M. A. Barstow, S. L. Casewell, M. R. Burleigh, J. B. Holberg,
 and H. E. Bond. Testing the white dwarf mass-radius relation and compar-
 ing optical and far-UV spectroscopic results with Gaia DR2, HST, and FUSE.
 MNRAS, 479:1612–1626, September 2018. doi: 10.1093/mnras/sty1425.
-
-
-
-Coding standards and the grading rubric are posted on D2L.
-
