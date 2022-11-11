@@ -32,7 +32,12 @@ Report/closeout
 
 1. As mentioned in the contents, file `Project_2_WriteUp.md` is where you can find our report and writeup of the project. 
 
-2. How to run our code: (## FINISH ##)
+2. How to run our code: (## FINISH 
+
+>The main bit of code is mass_radius_analysis.py and is where the mass_radius table is made and the shooting (a little abstracted to additional_funcs.py) happens, this file also generates final results.
+>comps_obs_plotting.py is where the comparison to observations plot is generated
+>The folder ParamAnalysis is where all of the parameter space analysis occurs
+>I'm probably going to be on later to update this (working on HW)
    
 Resources
 ---------
