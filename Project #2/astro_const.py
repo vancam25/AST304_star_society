@@ -40,7 +40,6 @@ sigmaSB = _ac.sigma_sb.value
 
 K_e = (1/5) * (3/(8*pi))**(2/3) * ((h**2)/m_e) * (1/(m_u**(5/3)))
 
-
 if __name__ == "__main__":
     
     constants = [
@@ -64,7 +63,7 @@ if __name__ == "__main__":
         ("Stefan-Boltzmann constant",sigmaSB,"W m**-2 K**-4"),
         ("mue", mue, ""),
         ("Fermi Energy", fermi_energy, "MeV"),
-        ("Ke", Ke, "")
+        ("Ke", K_e, "")
         
     ]
     

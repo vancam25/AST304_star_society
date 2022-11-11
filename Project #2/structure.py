@@ -66,7 +66,7 @@ def central_values(Pc, delta_m, mue):
     """
     z = np.zeros(2)
     
-    rho_i = eos.density(Pc,mue)
+    rho_i = eos.density(Pc,mue) # calculate the density of the "core"
     r_i = ((3 * delta_m) / (4 * ac.pi * rho_i))**(1/3) # Eq.(9) of "instructions-1.pdf"
     
     z[0] = r_i
@@ -112,7 +112,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000, err_max_step = False):
         Pc (float):
             Central pressure; units [Pa]
             
-        core_mass (float):
+        delta_m (float):
             Core mass; units [kg]
             
         eta (float):
@@ -144,7 +144,7 @@ def integrate(Pc, delta_m, eta, xi, mue, max_steps=10000, err_max_step = False):
     p_step = np.zeros(max_steps)
     
     # set starting conditions using central values 
-    z = central_values(Pc, delta_m*(10**(-4)), mue)
+    z = central_values(Pc, delta_m, mue)
     
     Nsteps = 0
     max_step_reached = 0
