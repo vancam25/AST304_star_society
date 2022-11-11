@@ -21,15 +21,33 @@ class WhiteDwarf:
         self.mass = M
         self.mass_error = M_err      
 
-from observations import MassRadiusObservations
-obs = MassRadiusObservations()
-print(obs.masses)
-print(obs.radii)
-print(obs.radius_errors)
-
-for source, info in obs.sources.items():
-    print('{0:20} M =  {1:5.3f} +/- {2:5.3f} Msun'.format(source, info.mass, info.mass_error))
-
+class MassRadiusObservations:
+    """
+    Lightweight class storing data complied by Joyce et al. (2018), MNRAS 
+    479, 1612 (Table 4).  To use:
+    
+    In [1]: from observations import MassRadiusObservations
+    In [2]: obs = MassRadiusObservations()
+    In [3]: obs.masses
+    Out[3]: 
+    array([0.927, 0.607, 0.643, 0.541, 0.59 , 0.398, 0.277, 0.729, 0.543,
+           0.723, 0.559, 0.524, 0.633, 0.376])
+    In [4]: obs.radii
+    Out[4]: 
+    array([0.802, 1.461, 1.457, 1.34 , 1.378, 1.418, 1.464, 1.235, 1.42 ,
+           1.717, 2.183, 1.452, 1.993, 1.504])
+    In [5]: obs.radius_errors
+    Out[5]: 
+    array([0.011, 0.009, 0.036, 0.013, 0.011, 0.009, 0.018, 0.018, 0.014,
+           0.009, 0.043, 0.024, 0.009, 0.042])
+    
+    In [6]: for source,info in obs.sources.items():
+        ...:     print('{0:20} M = {1:5.3f} +/- {2:5.3f} Msun'.format(source,info.mass,info.mass_error))
+    Sirius B             M = 0.927 +/- 0.107 Msun
+    HZ43                 M = 0.643 +/- 0.065 Msun
+    ...
+    and so on.  See the test at bottom for an example.
+    """
 
     def __init__(self):
         self._data = genfromtxt(\
@@ -51,28 +69,29 @@ for source, info in obs.sources.items():
             name = '-'.join([s,i])
             self._observations[name] = WhiteDwarf(s,i,r,r_e,m,m_e)
 
-    #def sources(self):
-        #return self._observations
+    @property
+    def sources(self):
+        return self._observations
 
-   
-    #def masses(self):
-        #return self._data['M']
+    @property
+    def masses(self):
+        return self._data['M']
 
-    
-    #def radii(self):
-        #return self._data['R']
+    @property
+    def radii(self):
+        return self._data['R']
 
-   
-    #def mass_errors(self):
-        #return self._data['M_err']
+    @property
+    def mass_errors(self):
+        return self._data['M_err']
         
+    @property
+    def radius_errors(self):
+        return self._data['R_err']
     
-    #def radius_errors(self):
-        #return self._data['R_err']
-    
-    
-    #def instruments(self):
-        #return self._instruments
+    @property
+    def instruments(self):
+        return self._instruments
 
 def gen_latex_table(observations):
     """
@@ -158,6 +177,3 @@ if __name__ == '__main__':
     with open(tabfile,'w') as fancytab:
         for line in gen_latex_table(obs):
             fancytab.write(line+'\n')
-
-        
-    

@@ -31,8 +31,6 @@ for i in range(len(results_array)):
     
     results_array[i,0] = integration_res[0]
     results_array[i,1] = integration_res[1]
-    
-# print(results_array)
 
 results_array[:,3] = results_array[:,2] / (ac.G * results_array[:,0]**2 * 
                                            results_array[:,1]**(-4))
