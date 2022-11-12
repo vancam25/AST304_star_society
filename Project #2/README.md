@@ -40,16 +40,7 @@ Report/closeout
     Our code is first run through the file `mass_radius_analysis.py`. This generates the mass_radius table and where the shooting function (which is a function routine that to choose a more adept Pc) occurs. These functions are called from our file `additional_funcs.py` which describes and creates the shooting function and routine to compute our mass values. Additionally, our final graphical results in the file `comp_obs_plotting.py` are generated from the table created in `mass_radius_analysis.py`. 
     Secondly, the file `comps_obs_plotting.py` is where our comparison happens. There we compare our values to the observations plot. 
     Third, the folder `ParamAnalysis` holds all our parameter analysis, as the name suggests. 
-    
-Hannah's note: 
-Still working, but I've added new files to the contents and formatted some of the run our code section. Will work on homework rq and then add descriptions to other files and finish README.md. Let me know if anything is wrong or needs updating. 
 
-Steven's note: 
->The main bit of code is mass_radius_analysis.py and is where the mass_radius table is made and the shooting (a little abstracted to additional_funcs.py) happens, this file also generates final results.
->comps_obs_plotting.py is where the comparison to observations plot is generated
->The folder ParamAnalysis is where all of the parameter space analysis occurs
->I'm probably going to be on later to update this (working on HW))
-   
 Resources
 ---------
 
