@@ -4,6 +4,38 @@
 # Michigan State University
 ########################################################################
 
+"""
+Description: 
+
+sample_param_normal: A function that takes a sample size, mue, and sigma to 
+    generate an array of values randomly sampled from a normal distribution. 
+    Centered around mue with standard deviation sigma. Follows the 
+    Box-Muller transform method. Returns z_0 and z_1; arrays of values 
+    randomly sampled via the distribution centered at mu with standard deviation 
+    sigma. 
+
+calc_structure_routine: A function with inputs pressure Pc, core mass offset delta_m, 
+    eta, xi, max_steps, and err_max_steps. Runs the integration function from "structure.py" 
+    as set by 'M_test' and returns the final values of the integration results for mass and radius
+    in an array named as m_r_array. 
+    
+test_param_routine: A function with inputs pressure Pc, core mass offset delta_m, 
+    eta, xi, max_steps, and err_max_steps. Runs the integration loop with these parameters
+    and returns the final values of mass, radius, and pressure in an array named 
+    m_r_p_array. Also returns a value defining if the integration went over the max_steps. 
+            
+
+shooting_func: A function used in the shooting routine to choose a 'better' pressure Pc. Takes inputs pressure Pc, 
+    the mass wanted m_want, core mass offset delta_m, eta, xi, max_steps, and err_max_steps. 
+    Returns m_res[-1] - m_want (aka the difference between the desired mass and the one calculated). 
+    
+
+shooting_routine: A function that uses the shooting method to improve the central pressure guess
+    for our white dwarf star of mass m_want. This assums that m_want is close to the mass of the sun. 
+    Takes input mass wanted m_want and returns bisect_res, or the guess for pressure Pc using the shooting method. 
+
+"""
+
 import random as rnd
 import numpy as np
 import structure as stc
