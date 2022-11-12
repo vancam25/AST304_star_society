@@ -4,6 +4,16 @@
 # Michigan State University
 ########################################################################
 
+"""
+Description: 
+
+This file calculates the mass_radius table needed for comparison. First we define our paremeters
+    from the Parameters file. We then define the mass fraction mass_frac and create a 
+    result_array from our shooting routine. We then create our integration results array 
+    from these values as integration_res. Lastly we use these results to create our table. 
+
+"""
+
 import configparser
 import eos
 import astro_const as ac
