@@ -37,8 +37,11 @@ Report/closeout
 1. As mentioned in the contents, file `Project_2_WriteUp.md` is where you can find our report and writeup of the project. 
 
 2. How to run our code: 
+
     Our code is first run through the file `mass_radius_analysis.py`. This generates the mass_radius table and where the shooting function (which is a function routine that to choose a more adept Pc) occurs. These functions are called from our file `additional_funcs.py` which describes and creates the shooting function and routine to compute our mass values. Additionally, our final graphical results in the file `comp_obs_plotting.py` are generated from the table created in `mass_radius_analysis.py`. 
+    
     Secondly, the file `comps_obs_plotting.py` is where our comparison happens. There we compare our values to the observations plot. 
+    
     Third, the folder `ParamAnalysis` holds all our parameter analysis, as the name suggests. 
 
 Resources
