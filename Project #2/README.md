@@ -21,23 +21,34 @@ Contents
 9. `Provencal.txt`: A table of masses and radii and their error for multiple white dwarf stars, which was provided to us for comparison.
 10. `parameter_testing_1.py`: A module with a routine for going through our code and testing parameters, which are all saved into a directory. 
 11. `parameter_testing_2.py`: A module that creates the graphs of our results and saves them in a directory. 
-12. `Project_2_WriteUp.md`: A markdown document of our final write up and results from the project.
-13. `FinalPlots`: A directory that holds our final plots for the project.
-14. `ParamAnalysis`: A directory filled with csv files as a result of testing for our δ, η, and ξ convergences. 
-15. `rubric.md`: The rubric provided to us. 
-16. `GroupReadMe.txt`: A text file with the breakdown of project duties, meant for us to designate work. 
+12. `additional_funcs.py`: A module of additional functions that creates the shooting function and routine for use in the `mass_radius_analysis.py` file.
+13. `mass_radius_analysis.py`: A module for calculating our mass_radius table for analysis. 
+14. `comp_obs_plotting.py`: Creates and saves the figure FinalPlots/Mass_Radius_Plot.svg.
+15. `proj_2_config.ini`: Final parameters of xi, eta, delta_m, and max_steps to be used in `mass_radius_analysis.py`. 
+16. `Project_2_WriteUp.md`: A markdown document of our final write up and results from the project.
+17. `FinalPlots`: A directory that holds our final plots for the project.
+18. `ParamAnalysis`: A directory filled with csv files as a result of testing for our δ, η, and ξ convergences. 
+19. `rubric.md`: The rubric provided to us. 
+20. `GroupReadMe.txt`: A text file with the breakdown of project duties, meant for us to designate work. 
 
 Report/closeout
 ---------------
 
 1. As mentioned in the contents, file `Project_2_WriteUp.md` is where you can find our report and writeup of the project. 
 
-2. How to run our code: (## FINISH 
+2. How to run our code: 
+    Our code is first run through the file `mass_radius_analysis.py`. This generates the mass_radius table and where the shooting function (which is a function routine that to choose a more adept Pc) occurs. These functions are called from our file `additional_funcs.py` which describes and creates the shooting function and routine to compute our mass values. Additionally, our final graphical results in the file `comp_obs_plotting.py` are generated from the table created in `mass_radius_analysis.py`. 
+    Secondly, the file `comps_obs_plotting.py` is where our comparison happens. There we compare our values to the observations plot. 
+    Third, the folder `ParamAnalysis` holds all our parameter analysis, as the name suggests. 
+    
+Hannah's note: 
+Still working, but I've added new files to the contents and formatted some of the run our code section. Will work on homework rq and then add descriptions to other files and finish README.md. Let me know if anything is wrong or needs updating. 
 
+Steven's note: 
 >The main bit of code is mass_radius_analysis.py and is where the mass_radius table is made and the shooting (a little abstracted to additional_funcs.py) happens, this file also generates final results.
 >comps_obs_plotting.py is where the comparison to observations plot is generated
 >The folder ParamAnalysis is where all of the parameter space analysis occurs
->I'm probably going to be on later to update this (working on HW)
+>I'm probably going to be on later to update this (working on HW))
    
 Resources
 ---------
