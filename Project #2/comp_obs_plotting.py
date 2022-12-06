@@ -4,6 +4,16 @@
 # Michigan State University
 ########################################################################
 
+"""
+Description: 
+
+This file creates our mass_radius plots. We first import in our MassRadiusObservations and
+     our make_observation_plot from our observations file. We then take our values and plot them
+     as both a line plot and a scatter plot (our values and our errors are plotted here). 
+     We then save the plot for our writeup.
+
+"""
+
 import pandas as pds
 import matplotlib.pyplot as plt
 
