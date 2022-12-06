@@ -19,7 +19,7 @@ def mean_molecular_weight(Z,A,X):
     As = np.array(A)
     Xs = np.array(X)
     assert np.sum(Xs) == 1.0
-     mu = 1/(np.sum((Xs/As)(Zs+1)))
+    mu = 1/(np.sum((Xs/As)(Zs+1)))
     # compute value of mean molecular weight
     mu = 0.0
     return mu
