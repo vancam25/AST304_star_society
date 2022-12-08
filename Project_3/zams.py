@@ -31,8 +31,7 @@ def Teff(Mwant):
     
     # fill this out to perform interpolation to find Teff for Mwant
     
-    mvals = np.linspace(0.1,0.3,20)
-    Teff = np.interp(mvals, masses, Teffs)
+    Teff = np.interp(Mwant, masses, Teffs)
     
     return Teff
 
