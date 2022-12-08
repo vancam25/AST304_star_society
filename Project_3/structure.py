@@ -6,13 +6,12 @@ radius.
 """
 
 import numpy as np
-import eos_template as eos
 import astro_const as ac
 
 from eos_template import get_rho_and_T, mean_molecular_weight
 from ode import rk4
 from astro_const import G, Msun, Rsun, Lsun, kB, m_u, fourpi
-from reactions import pp_rate
+from reactions_template import pp_rate
 
 def central_thermal(m,r,mu):
     """ 
@@ -30,10 +29,10 @@ def central_thermal(m,r,mu):
         Pc, rhoc, Tc
             central pressure, density, and temperature in solar units
     """
-    # fill this in
-    Pc = 0.0
-    rhoc = 0.0
-    Tc = 0.0
+    # fill this in    
+    Pc = 0.77*ac.G*m**2/r**4
+    rhoc = 5.99*3*m/(4*ac.pi*r**3)
+    Tc = 0.54*(mu*1.66*(10**-27)/(1.380649*10**-23))*(G*m/r)
     
     return Pc, rhoc, Tc
 

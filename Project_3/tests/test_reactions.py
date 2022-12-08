@@ -1,5 +1,5 @@
 import pytest
-from reactions import pp_rate
+from reactions_template import pp_rate
 from numcheck import within_tolerance
 
 def analytical_Texponent(T):

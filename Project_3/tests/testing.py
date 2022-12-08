@@ -24,11 +24,11 @@ from test_zams import *
 test_chem()
 print("chemistry passed testing")
 
-# test_adiabat()
-# print("adiabatic EOS passed testing")
+test_adiabat()
+print("adiabatic EOS passed testing")
 
-# test_pp()
-# print("reactions passed testing")
+test_pp()
+print("reactions passed testing")
 
 # test_central_thermal()
 # print("central temperature passed testing")
