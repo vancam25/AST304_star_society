@@ -38,3 +38,5 @@ print("chemistry passed testing")
 
 # test_surface_luminosity()
 # print("surface luminosity passed testing")
+
+# the code ran successfully: 'chemistry passed testing'
