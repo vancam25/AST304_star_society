@@ -22,7 +22,7 @@ def mean_molecular_weight(Z,A,X):
     
     
     # compute value of mean molecular weight
-    mu = np.sum(Xs*(1+Zs)/As)  #formula for mean molecular weight
+    mu = np.sum(Xs*(1+Zs)/As)  #formula of mean molecular weight for a fully ionized plasma
     mu =mu**(-1) #since the formula above is the formula for the inverse of mu, we inverse it over here to return the correct computation
     return mu
     
