@@ -22,6 +22,11 @@ def mean_molecular_weight(Z,A,X):
     
     mu = np.sum(Xs*(1+Zs)/As)**(-1)
     # compute value of mean molecular weight
+<<<<<<< HEAD
+=======
+    mu = np.sum(Xs*(1+Zs)/As)  #formula for mean molecular weight
+    mu =mu**(-1) #since the formula above is the formula for the inverse of mu, we inverse it over here to return the correct computation
+>>>>>>> 9e3191a421047f273836580cca11fe30618d9452
     return mu
     
 def get_rho_and_T(P,P_c,rho_c,T_c):
@@ -42,7 +47,7 @@ def get_rho_and_T(P,P_c,rho_c,T_c):
     """
 
     # replace with computed values
-    rho = rho_c*(P/P_c)**(3/5)
+    rho = rho_c*(P/P_c)**(3/5) 
     T = T_c*((P/P_c)**(1-1/(5/3)))
 
     return rho, T
