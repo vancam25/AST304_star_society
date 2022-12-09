@@ -33,10 +33,10 @@ print("reactions passed testing")
 test_central_thermal()
 print("central temperature passed testing")
 
-# test_Teff()
-# print("effective temperature passed testing")
+test_Teff()
+print("effective temperature passed testing")
 
-# test_surface_luminosity()
-# print("surface luminosity passed testing")
+test_surface_luminosity()
+print("surface luminosity passed testing")
 
 # the code ran successfully: 'chemistry passed testing'

@@ -1,5 +1,5 @@
 import pytest
-from zams_template import Teff, surface_luminosity
+from zams import Teff, surface_luminosity
 from astro_const import Rsun, Lsun
 from numcheck import within_tolerance
 

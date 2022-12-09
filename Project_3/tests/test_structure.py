@@ -5,7 +5,7 @@ from numcheck import within_tolerance
 def test_central_thermal():
     # check value for solar mass, radius and mean molecular weight 0.6
     Pcs,rhocs,Tcs = central_thermal(1.0,1.0,0.6)
-    print(Pcs, rhocs, Tcs)
+    
     assert within_tolerance(Pcs,8.675e+14,tol=1.0e-2)
     assert within_tolerance(rhocs,8.445e+03,tol=1.0e-2)
     assert within_tolerance(Tcs,7.413e+06,tol=1.0e-2)
