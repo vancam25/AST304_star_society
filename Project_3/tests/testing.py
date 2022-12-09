@@ -30,8 +30,8 @@ print("adiabatic EOS passed testing")
 test_pp()
 print("reactions passed testing")
 
-# test_central_thermal()
-# print("central temperature passed testing")
+test_central_thermal()
+print("central temperature passed testing")
 
 # test_Teff()
 # print("effective temperature passed testing")
