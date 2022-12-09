@@ -12,7 +12,7 @@ import astro_const as ac
 from eos import get_rho_and_T, mean_molecular_weight
 from ode import rk4
 from astro_const import G, Msun, Rsun, Lsun, kB, m_u, fourpi
-from reactions import pp_rate
+from reactions_template import pp_rate
 
 def central_thermal(m,r,mu):
     """ 
@@ -31,9 +31,14 @@ def central_thermal(m,r,mu):
             central pressure, density, and temperature in solar units
     """
     # fill this in
-    Pc = 0.77*G*(m**2)/(r**4)
-    rhoc = 5.99*3*m/(4*np.pi*r**3)
-    Tc = 0.54*(mu*m_u/(kB))*(G*m/r)
+    
+    m = m*ac.Msun
+    r = r*ac.Rsun
+    
+    # fill this in
+    Pc = 0.77 * (ac.G * m**2)/(r**4)
+    rhoc = 5.99 * ((3 * m) / (4 * ac.pi * (r**3)))
+    Tc = 0.54 * ((mu * 1.66E-27)/(1.380649E-23)) * ((ac.G * m)/r)
     
     return Pc, rhoc, Tc
 
@@ -142,7 +147,7 @@ def lengthscales(m, z, rho, ep_nuc):
     
     return(Hr_Hp_Hl)
     
-def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, max_steps=10, err_max_step = False):
+def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, max_steps=10000, err_max_step = False):
     """
     Description:
         Integrates the scaled stellar structure equations
@@ -182,6 +187,8 @@ def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, ma
     r_step = np.zeros(max_steps)
     p_step = np.zeros(max_steps)
     l_step = np.zeros(max_steps)
+    rho_step = np.zeros(max_steps)
+    t_step = np.zeros(max_steps)
     
     Z = comp_array[0]
     A = comp_array[1]
@@ -216,6 +223,8 @@ def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, ma
         r_step[step] = radius
         p_step[step] = pressure
         l_step[step] = luminosity
+        rho_step[step] = rho
+        t_step[step] = T
         
         # set the stepsize
         stepsize = xi * min(lengthscales(m_step[step], z, rho, ep_nuc))
@@ -236,5 +245,5 @@ def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, ma
         else:
             max_step_reached = 1
             raise Exception('too many iterations')
-        
-    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], l_step[0:Nsteps], Nsteps
+    
+    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], l_step[0:Nsteps], rho_step[0:Nsteps], t_step[0:Nsteps], Nsteps
