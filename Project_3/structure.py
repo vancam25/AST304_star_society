@@ -8,7 +8,7 @@ radius.
 import numpy as np
 import astro_const as ac
 
-from eos_template import get_rho_and_T, mean_molecular_weight
+from eos import get_rho_and_T, mean_molecular_weight
 from ode import rk4
 from astro_const import G, Msun, Rsun, Lsun, kB, m_u, fourpi
 from reactions_template import pp_rate
@@ -92,11 +92,11 @@ def central_values(P_c, Rho_c, T_c, delta_m, XH, pp_factor):
     """
     z = np.zeros(3)
     
-    r_i = ((3 * delta_m) / (4 * ac.pi * Rho_c))**(1/3) # Eq.(9) of "instructions-1.pdf"
+    r_i = ((3 * delta_m*ac.Msun) / (4 * ac.pi * Rho_c))**(1/3) # Eq.(9) of "instructions-1.pdf"
     
     z[0] = r_i
     z[1] = P_c
-    z[2] = pp_rate(T_c, Rho_c, XH, pp_factor) * delta_m
+    z[2] = pp_rate(T_c, Rho_c, XH, pp_factor) * delta_m*ac.Msun
     
     return(z)
     
@@ -120,15 +120,17 @@ def lengthscales(m, z, rho, ep_nuc):
             Current lengthscale for radius and pressure; like [Hr, Hp]
     """
     
-    Hr = (4/3) * ac.pi * z[0]**3 * rho # Eq.(10) of "instructions-1.pdf"
-    Hp = (4 * ac.pi * z[0]**4 * z[1]) / (ac.G * m) # Eq.(11) of "instructions-1.pdf"
-    Hl = z[2] / ep_nuc # Eq.(14) of "instructions-3.pdf", the nuclear heating rate; units [W kg^-1]
+    z = np.abs(z)
+    
+    Hr = (4/3) * ac.pi * z[0]**3 * rho
+    Hp = (4 * ac.pi * z[0]**4 * z[1]) / (ac.G * m)
+    Hl = z[2] / np.abs(ep_nuc)
     
     Hr_Hp_Hl = np.array([Hr, Hp, Hl])
     
     return(Hr_Hp_Hl)
     
-def integrate(Pc, delta_m, delta_r, eta, xi, mu, XH, pp_factor, max_steps=10000, err_max_step = False):
+def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, max_steps=10, err_max_step = False):
     """
     Description:
         Integrates the scaled stellar structure equations
@@ -166,9 +168,17 @@ def integrate(Pc, delta_m, delta_r, eta, xi, mu, XH, pp_factor, max_steps=10000,
     p_step = np.zeros(max_steps)
     l_step = np.zeros(max_steps)
     
+    Z = comp_array[0]
+    A = comp_array[1]
+    X = comp_array[2]
+    XH = X[0]
+    
+    mu = mean_molecular_weight(Z, A, X)
+    
     # set starting conditions using central values 
-    P_c, Rho_c, T_c = central_thermal(delta_m, delta_r, mu)
+    P_c, Rho_c, T_c = central_thermal(Mwant, Rwant, mu) #final mass and radius
     z = central_values(P_c, Rho_c, T_c, delta_m, XH, pp_factor)
+    # print(z)
     
     Nsteps = 0
     max_step_reached = 0
@@ -177,13 +187,13 @@ def integrate(Pc, delta_m, delta_r, eta, xi, mu, XH, pp_factor, max_steps=10000,
         radius = z[0]
         pressure = z[1]
         luminosity = z[2]
-        
+                
         rho, T = get_rho_and_T(pressure, P_c, Rho_c, T_c)
         
         ep_nuc = pp_rate(T, rho, XH, pp_factor)
         
         # are we at the surface?
-        if (pressure < eta*Pc):
+        if (pressure < eta*P_c):
             break
            
         # store the step, aka current values of m, r, p
@@ -197,7 +207,7 @@ def integrate(Pc, delta_m, delta_r, eta, xi, mu, XH, pp_factor, max_steps=10000,
         
         # take a step
         # USE RK4     
-        z = rk4(stellar_derivatives, delta_m, z, stepsize, rho, ep_nuc) 
+        z = rk4(stellar_derivatives, delta_m, z, stepsize, (rho, ep_nuc))
         
         delta_m = m_step[step] + stepsize
         
@@ -212,4 +222,4 @@ def integrate(Pc, delta_m, delta_r, eta, xi, mu, XH, pp_factor, max_steps=10000,
             max_step_reached = 1
             raise Exception('too many iterations')
         
-    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], l_step[0:Nsteps], max_step_reached
+    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], l_step[0:Nsteps], Nsteps
