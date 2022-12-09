@@ -1,5 +1,5 @@
 # 
-# <Team name, members go here>
+# <Star Society, Abram Anderson, Steven Vancamp, Sanskriti Verma, Hannah Sullivan>
 # 
 
 import numpy as np
@@ -21,5 +21,5 @@ def pp_rate(T,rho,XH,pp_factor=1.0):
     """
     
     # fill this out
-    rate = pp_factor*((0.0024*rho*XH**2)/((T/10**9)**(2/3))*np.exp(-3.38/(T/10**9)**(1/3)))
+    rate = pp_factor*((0.0024*rho*XH**2)/((T/10**9)**(2/3))*np.exp(-3.38/(T/10**9)**(1/3))
     return rate
