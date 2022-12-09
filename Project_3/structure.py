@@ -2,16 +2,17 @@
 Routines for computing structure of fully convective star of a given mass and 
 radius.
 
-<Team name, members go here>
+<Star Society, Abram Anderson, Steven Vancamp, Sanskriti Verma, Hannah Sullivan>
 """
 
 import numpy as np
+import eos_template as eos
 import astro_const as ac
 
 from eos_template import get_rho_and_T, mean_molecular_weight
 from ode import rk4
 from astro_const import G, Msun, Rsun, Lsun, kB, m_u, fourpi
-from reactions_template import pp_rate
+from reactions import pp_rate
 
 def central_thermal(m,r,mu):
     """ 
@@ -27,16 +28,12 @@ def central_thermal(m,r,mu):
             mean molecular weight
     Returns
         Pc, rhoc, Tc
-            central pressure, density, and temperature
+            central pressure, density, and temperature in solar units
     """
-    
-    m = m*ac.Msun
-    r = r*ac.Rsun
-    
     # fill this in
-    Pc = 0.77 * (ac.G * m**2)/(r**4)
-    rhoc = 5.99 * ((3 * m) / (4 * ac.pi * (r**3)))
-    Tc = 0.54 * ((mu * 1.66E-27)/(1.380649E-23)) * ((ac.G * m)/r)
+    Pc = 0.77*G*(m**2)/(r**4)
+    rhoc = 5.99*3*m/(4*np.pi*r**3)
+    Tc = 0.54*(mu*m_u/(kB))*(G*m/r)
     
     return Pc, rhoc, Tc
 
@@ -56,6 +53,9 @@ def stellar_derivatives(m, z, rho, ep_nuc):
             
         mue (float):
             Nucleon/electron ratio
+            
+        ep_nuc (array):
+            Current nuclear reaction rate energy; [W/kg]
         
     Returns:
         dzdm (array):
@@ -77,14 +77,23 @@ def central_values(P_c, Rho_c, T_c, delta_m, XH, pp_factor):
         core of mass delta_m with central pressure P_c
     
     Arguments:
-        Pc (float):
-            Central pressure; units [Pa]
+        P_c (float):
+            Central pressure; units [solar]
             
+        Rho_c (float):
+            Central density; units [solar]
+                
+        T_c (float):
+            Central temperature; units [solar]
+                       
         delta_m (float):
-            "Core" mass; units [kg]
+            "Core" mass; units [solar]
             
-        mue (float):
-            Nucleon/electron ratio
+        XH (float):
+            Ratio of Hydrogen compared to other elements
+            
+        pp_factor (float):
+            Scalar meant to change nuclear rate
     
     Returns:
         z (array):
@@ -112,8 +121,11 @@ def lengthscales(m, z, rho, ep_nuc):
         z (array):
             Current radius & pressure values; like [radius, pressure]; units [m],[Pa]
            
-        mue (float)
-            Mean electron weight ???
+        rho (float):
+            current density value; units []
+            
+        ep_nuc ():
+            nuclear heating rate; units [W kg^-1]
     
     Returns:
         z/|dzdm| (array):
@@ -139,6 +151,9 @@ def integrate(Pc, delta_m, delta_r, eta, xi, mu, XH, pp_factor, max_steps=10000,
             
         delta_m (float):
             Core mass; units [kg]
+            
+        delta_r (float):
+            
             
         eta (float):
             The integration stops when P < eta * Pc

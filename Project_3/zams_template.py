@@ -1,7 +1,7 @@
 """
 Routines for computing the zero-aged main-sequence for low-mass stars.
 
-<team name, members go here>
+<Star Society, Abram Anderson, Steven Vancamp, Sanskriti Verma, Hannah Sullivan>
 """
 
 import numpy as np
