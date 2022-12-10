@@ -46,13 +46,20 @@ from scipy.optimize import bisect
 import configparser
 
 confile = configparser.ConfigParser()
-confile.read('proj_2_config.ini')
+confile.read('proj_3_config.ini')
 
 def_delta_m = float(confile['Parameters']['delta_m'])
 def_delta_r = float(confile['Parameters']['delta_r'])
 def_eta = float(confile['Parameters']['eta'])
 def_xi = float(confile['Parameters']['xi'])
 def_max_step = int(confile['Parameters']['max_steps'])
+def_pp_factor = float(confile['Parameters']['pp_factor'])
+
+Z_array = np.array([int(i) for i in confile['Comparray']['Zs'].split(',')])
+A_array = np.array([int(i) for i in confile['Comparray']['As'].split(',')])
+XH_array = np.array([float(i) for i in confile['Comparray']['Xs'].split(',')])
+
+def_comp_array = np.vstack((Z_array,A_array,XH_array))
 
 def sample_param_normal(sample_size, mu, sigma):
     '''
@@ -101,41 +108,42 @@ def sample_param_normal(sample_size, mu, sigma):
     
     return(z_0, z_1)
 
-def calc_structure_routine(Pc, delta_m = def_delta_m, eta = def_eta,
-                           xi = def_xi, max_steps = def_max_step, 
-                           err_max_step = True):
-    '''
-    Description:
-        runs the integration loop with the parameters 'delta_m', 'eta', 'xi' and a 'Pc' as set 
-        by 'M_test' and returns the final values of the integration results for mass and radius
+# def calc_structure_routine(Pc, delta_m = def_delta_m, eta = def_eta,
+#                            xi = def_xi, max_steps = def_max_step, 
+#                            err_max_step = True):
+#     '''
+#     Description:
+#         runs the integration loop with the parameters 'delta_m', 'eta', 'xi' and a 'Pc' as set 
+#         by 'M_test' and returns the final values of the integration results for mass and radius
         
-    Arguments:
-        Pc (float):
-            central pressure; units [Pa]
+#     Arguments:
+#         Pc (float):
+#             central pressure; units [Pa]
             
-        delta_m (float):
-            "Core" mass; units [kg]
+#         delta_m (float):
+#             "Core" mass; units [kg]
         
-        eta (float):
-            the integration stops when P < eta * Pc
+#         eta (float):
+#             the integration stops when P < eta * Pc
             
-        xi (float):
-            the stepsize is set to be xi*min(p/|dp/dm|, r/|dr/dm|)
+#         xi (float):
+#             the stepsize is set to be xi*min(p/|dp/dm|, r/|dr/dm|)
             
-    Returns:
-        m_r_array (array):
-            array containing the final values for mass, and radius from 
-            the integration loop; like [mass, radius]; units [kg, m]
+#     Returns:
+#         m_r_array (array):
+#             array containing the final values for mass, and radius from 
+#             the integration loop; like [mass, radius]; units [kg, m]
             
-    '''
-    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=def_max_step, err_max_step=err_max_step) # run integration loop
+#     '''
+#     m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=def_max_step, err_max_step=err_max_step) # run integration loop
     
-    m_r_array = np.array([m_res[-1], r_res[-1]]) # save the final value  from the results of the integration loop
+#     m_r_array = np.array([m_res[-1], r_res[-1]]) # save the final value  from the results of the integration loop
     
-    return(m_r_array)
+#     return(m_r_array)
 
 def test_param_routine(Mwant, Rwant, delta_m = def_delta_m, delta_r = def_delta_r, 
-                       eta = def_eta, xi = def_xi, max_steps = def_max_step, 
+                       eta = def_eta, xi = def_xi, comp_array = def_comp_array, 
+                       pp_factor = def_pp_factor, max_steps = def_max_step, 
                        err_max_step = True):
     '''
     Description:
@@ -162,99 +170,116 @@ def test_param_routine(Mwant, Rwant, delta_m = def_delta_m, delta_r = def_delta_
             went over 'max_steps'; ike [mass, radius, pressure, bool]; units [kg, m, Pa, none]
             
     '''
-    m, r, p, l, rho, T, mx = stc.integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, def_pp_factor, 1000)
+    m, r, p, l, rho, T, mx = stc.integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, max_steps)
+    
+    res_array = np.array([m[-1], r[-1], p[-1], l[-1], rho[-1], T[-1], mx]) # save the final value  from the results of the integration loop
+    
+    return(res_array)
 
+def gen_param_analysis(Mwant, Rwant, param, param_name):
+    num_samples = 1000
+    std_obj_param = np.sqrt(param)
     
-    m_r_p_array = np.array([m_res[-1], r_res[-1], p_res[-1], max_step_reached]) # save the final value  from the results of the integration loop
+    param_sample_1, param_sample_2 = np.abs(sample_param_normal(num_samples, param, std_obj_param))
     
-    return(m_r_p_array)
+    param_sample_1_res = np.zeros((num_samples,7))
+    param_sample_2_res = np.zeros((num_samples,7))
+        
+    for i in range(num_samples):
+        param_1_dict = {param_name: param_sample_1[i]}
+        param_2_dict = {param_name: param_sample_2[i]}
+        
+        param_sample_1_res[i] = test_param_routine(Mwant, Rwant, **param_1_dict)
+        param_sample_2_res[i] = test_param_routine(Mwant, Rwant, **param_2_dict)
 
-def shooting_func(Pc, m_want, delta_m = def_delta_m, eta = def_eta, 
-                       xi = def_xi, max_steps = def_max_step, 
-                       err_max_step = True):
-    '''
-    Description:
-        function used as apart of the shooting routine to choose
-        a 'better' Pc
-        
-    Arguments:
-        Pc (float):
-            central pressure; units [Pa]
-            
-        m_want (float):
-            the desired final mass value: units [kg]
-        
-        delta_m (float):
-            "Core" mass; units [kg]
-        
-        eta (float):
-            the integration stops when P < eta * Pc
-            
-        xi (float):
-            the stepsize is set to be xi*min(p/|dp/dm|, r/|dr/dm|)
-            
-    Returns:
-        m_res[-1] - m_want (float):
-            the difference in the desired mass 'm_want' and the mass calculated with 'Pc'
-    '''
-    
-    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=10000, err_max_step=err_max_step) # run integration loop
-    
-    return(m_res[-1] - m_want)
+    return(param_sample_1_res, param_sample_2_res)
 
-def shooting_routine(m_want):
-    '''
-    Description:
-        function that uses the shooting method (as described in the 'instructions-1.pdf') 
-        to improve the central pressure guess for a star of mass 'm_want'. As written this 
-        assumes 'm_want' is relatively close to the mass of the sun
+# def shooting_func(Pc, m_want, delta_m = def_delta_m, eta = def_eta, 
+#                        xi = def_xi, max_steps = def_max_step, 
+#                        err_max_step = True):
+#     '''
+#     Description:
+#         function used as apart of the shooting routine to choose
+#         a 'better' Pc
         
-    Arguments:
-        m_want (float):
-            the desired final mass value; units [kg]
+#     Arguments:
+#         Pc (float):
+#             central pressure; units [Pa]
             
-    Returns:
-        bisect_res (float):
-            the guess for 'Pc' found using the shooting method; units [Pa]
-    '''
-    Pc_m_want = stc.pressure_guess(m_want, ac.mue) # make initial guess
-    
-    Pc_low_high = [0,0]
-    
-    shoot_result_1 = shooting_func(Pc_m_want, m_want)
-    
-    shoot_result_2 = 0
-    
-    if shoot_result_1 >= 0:
-        Pc_low_high[1] = Pc_m_want
+#         m_want (float):
+#             the desired final mass value: units [kg]
         
-        div_iter = 1
+#         delta_m (float):
+#             "Core" mass; units [kg]
         
-        while shoot_result_2 >= 0:
-            shoot_result_2 = shooting_func(Pc_m_want/div_iter, m_want)
+#         eta (float):
+#             the integration stops when P < eta * Pc
             
-            div_iter += 1
+#         xi (float):
+#             the stepsize is set to be xi*min(p/|dp/dm|, r/|dr/dm|)
             
-            if div_iter >= 1000:
-                raise Exception('Too Many Iterations')
+#     Returns:
+#         m_res[-1] - m_want (float):
+#             the difference in the desired mass 'm_want' and the mass calculated with 'Pc'
+#     '''
+    
+#     m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=10000, err_max_step=err_max_step) # run integration loop
+    
+#     return(m_res[-1] - m_want)
+
+# def shooting_routine(m_want):
+#     '''
+#     Description:
+#         function that uses the shooting method (as described in the 'instructions-1.pdf') 
+#         to improve the central pressure guess for a star of mass 'm_want'. As written this 
+#         assumes 'm_want' is relatively close to the mass of the sun
+        
+#     Arguments:
+#         m_want (float):
+#             the desired final mass value; units [kg]
+            
+#     Returns:
+#         bisect_res (float):
+#             the guess for 'Pc' found using the shooting method; units [Pa]
+#     '''
+#     Pc_m_want = stc.pressure_guess(m_want, ac.mue) # make initial guess
+    
+#     Pc_low_high = [0,0]
+    
+#     shoot_result_1 = shooting_func(Pc_m_want, m_want)
+    
+#     shoot_result_2 = 0
+    
+#     if shoot_result_1 >= 0:
+#         Pc_low_high[1] = Pc_m_want
+        
+#         div_iter = 1
+        
+#         while shoot_result_2 >= 0:
+#             shoot_result_2 = shooting_func(Pc_m_want/div_iter, m_want)
+            
+#             div_iter += 1
+            
+#             if div_iter >= 1000:
+#                 raise Exception('Too Many Iterations')
                 
-        Pc_low_high[0] = Pc_m_want/div_iter
+#         Pc_low_high[0] = Pc_m_want/div_iter
     
-    else:
-        Pc_low_high[0] = Pc_m_want 
+#     else:
+#         Pc_low_high[0] = Pc_m_want 
         
-        mult_iter = 1
+#         mult_iter = 1
         
-        while shoot_result_2 >= 0:
-            shoot_result_2 = shooting_func(Pc_m_want*mult_iter, m_want)
+#         while shoot_result_2 >= 0:
+#             shoot_result_2 = shooting_func(Pc_m_want*mult_iter, m_want)
             
-            mult_iter += 1
+#             mult_iter += 1
             
-            if mult_iter >= 1000:
-                raise Exception('Too Many Iterations')
+#             if mult_iter >= 1000:
+#                 raise Exception('Too Many Iterations')
         
-        Pc_low_high[1] = Pc_m_want*mult_iter
+#         Pc_low_high[1] = Pc_m_want*mult_iter
     
-    bisect_res = bisect(shooting_func, Pc_low_high[1], Pc_low_high[0], args=(m_want))
+#     bisect_res = bisect(shooting_func, Pc_low_high[1], Pc_low_high[0], args=(m_want))
         
-    return(bisect_res)
+#     return(bisect_res)

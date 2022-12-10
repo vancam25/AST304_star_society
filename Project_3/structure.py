@@ -105,7 +105,7 @@ def central_values(P_c, Rho_c, T_c, delta_m, XH, pp_factor):
             Current radius & pressure values; like [radius, pressure]; units [m],[Pa]
     """
     z = np.zeros(3)
-    
+
     r_i = ((3 * delta_m*ac.Msun) / (4 * ac.pi * Rho_c))**(1/3) # Eq.(9) of "instructions-1.pdf"
     
     z[0] = r_i
