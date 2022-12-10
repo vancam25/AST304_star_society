@@ -29,12 +29,10 @@ Report/closeout
 Resources
 ---------
 
-Bill Paxton, Lars Bildsten, Aaron Dotter, Falk Herwig, Pierre Lesaffre, and
-  Frank Timmes. Modules for experiments in stellar astrophysics (MESA).
-  ApJS, 192:3, January 2011.
-
 G. Chabrier, I. Baraffe, F. Allard, and P. Hauschildt. Evolutionary Models for
   Very Low-Mass Stars and Brown Dwarfs with Dusty Atmospheres. ApJ, 542:
   464–472, October 2000. doi: 10.1086/309513.
   
-
+Bill Paxton, Lars Bildsten, Aaron Dotter, Falk Herwig, Pierre Lesaffre, and
+  Frank Timmes. Modules for experiments in stellar astrophysics (MESA).
+  ApJS, 192:3, January 2011.
