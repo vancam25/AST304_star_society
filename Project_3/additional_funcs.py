@@ -49,6 +49,7 @@ confile = configparser.ConfigParser()
 confile.read('proj_2_config.ini')
 
 def_delta_m = float(confile['Parameters']['delta_m'])
+def_delta_r = float(confile['Parameters']['delta_r'])
 def_eta = float(confile['Parameters']['eta'])
 def_xi = float(confile['Parameters']['xi'])
 def_max_step = int(confile['Parameters']['max_steps'])
@@ -133,8 +134,8 @@ def calc_structure_routine(Pc, delta_m = def_delta_m, eta = def_eta,
     
     return(m_r_array)
 
-def test_param_routine(Pc, delta_m = def_delta_m, eta = def_eta, 
-                       xi = def_xi, max_steps = def_max_step, 
+def test_param_routine(Mwant, Rwant, delta_m = def_delta_m, delta_r = def_delta_r, 
+                       eta = def_eta, xi = def_xi, max_steps = def_max_step, 
                        err_max_step = True):
     '''
     Description:
@@ -161,7 +162,8 @@ def test_param_routine(Pc, delta_m = def_delta_m, eta = def_eta,
             went over 'max_steps'; ike [mass, radius, pressure, bool]; units [kg, m, Pa, none]
             
     '''
-    m_res, r_res, p_res, max_step_reached = stc.integrate(Pc, delta_m, eta, xi, ac.mue, max_steps=def_max_step, err_max_step=err_max_step) # run integration loop
+    m, r, p, l, rho, T, mx = stc.integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, def_pp_factor, 1000)
+
     
     m_r_p_array = np.array([m_res[-1], r_res[-1], p_res[-1], max_step_reached]) # save the final value  from the results of the integration loop
     
