@@ -4,7 +4,7 @@
 #### Michigan State University
 ===========
 
-(insert project description)
+In this project, we calculate radius and luminosity values for low mass stars, as well as experimenting with the p+p reaction rate. Changing this rate has an impact on the structure of the star, which in change influences the luminosity. In order to explore these tasks, we were able to take the code from Project 2 on white dwarfs and add in needed equations for luminosity and reaction rate. From this, we were able to generate the needed values and plots to answer the questions set out for us. 
 
 Contents
 ===========
