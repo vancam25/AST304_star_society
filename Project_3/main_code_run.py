@@ -25,9 +25,9 @@ XH_array = np.array([float(i) for i in confile['Comparray']['Xs'].split(',')])
 comp_array = np.vstack((Z_array,A_array,XH_array))
 
 Mwant = 0.3
-RWant = 0.33
+Rwant = 0.33
 
-m, r, p, l, rho, T, mx = stc.integrate(Mwant, RWant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 1000)
+# m, r, p, l, rho, T, mx = stc.integrate(Mwant, Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 1000)
 
 #print('m', m[-1] / ac.Msun)
 #print('r', r[-1] / ac.Rsun)
@@ -37,14 +37,15 @@ m, r, p, l, rho, T, mx = stc.integrate(Mwant, RWant, def_delta_m, def_delta_r, d
 #print('T', T[-1])
 #print('mx', mx)
 
-#test1 = cl.Compute_L(Mwant, RWant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 1000)
-#print(test1)
+test1 = cl.Compute_L(Mwant, Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 10000)
+print(test1)
 
-teff = zms.Teff(Mwant)
+# teff = zms.Teff(Mwant)
 
-surf_lum = zms.surface_luminosity(teff,r)
+# surf_lum = zms.surface_luminosity(teff,r)
 
-print(l-surf_lum)
+# print((l-surf_lum) / ac.Lsun)
 
+# plt.scatter(np.arange(len(l)),np.log((l-surf_lum) / ac.Lsun))
 
 

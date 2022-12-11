@@ -11,7 +11,7 @@ import astro_const as ac
 
 from eos import get_rho_and_T, mean_molecular_weight
 from ode import rk4
-from astro_const import G, Msun, Rsun, Lsun, kB, m_u, fourpi
+# from astro_const import G, Msun, Rsun, Lsun, kB, m_u, fourpi
 from reactions_template import pp_rate
 
 def central_thermal(m,r,mu):

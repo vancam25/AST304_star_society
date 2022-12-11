@@ -46,8 +46,7 @@ def surface_luminosity(Teff,radius):
     
     # fill this in
     
-    for i in radius: 
-        luminosity = fourpi*(i**2)*sigmaSB*(Teff**4)
+    luminosity = fourpi*(radius**2)*sigmaSB*(Teff**4)
     
     
     
