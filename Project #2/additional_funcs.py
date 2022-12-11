@@ -253,8 +253,11 @@ def shooting_routine(m_want):
         
         Pc_low_high[1] = Pc_m_want*mult_iter
     
-    print()
+    print('a', Pc_low_high[1])
+    print('b', Pc_low_high[0])
     
     bisect_res = bisect(shooting_func, Pc_low_high[1], Pc_low_high[0], args=(m_want))
+    
+    print('res', bisect_res)
     
     return(bisect_res)

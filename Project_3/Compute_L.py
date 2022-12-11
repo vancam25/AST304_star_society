@@ -42,17 +42,26 @@ def Compute_L(Mwant, Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_arra
         
         surf_lum = zms.surface_luminosity(teff,r_test)
         
-        print('r',r_test)
-        print('l_nuc',L_nuc)
-        print('l_surf',surf_lum)
-        print('t',teff)
-        print()
+        # print('r',r_test)
+        # print('l_nuc',L_nuc)
+        # print('l_surf',surf_lum)
+        # print('t',teff)
+        # print()
         
         subtraction = L_nuc - surf_lum
         
         return subtraction
     
+    a = Rwant*1E-8
+    b = 0
+    b_res = 0
+    b_offset = 0
     
-    main_sequence_radius = brentq(bisect_input_func, a = Rwant*1E-8, b = Rwant, args = (teff))
+    while b_res >= 0:
+        b_offset += 1
+        b = Rwant * b_offset
+        b_res = bisect_input_func(b, teff)
     
-    return main_sequence_radius 
+    main_sequence_radius = brentq(bisect_input_func, a, b, args = (teff))
+    
+    return main_sequence_radius, a, b

@@ -24,7 +24,7 @@ XH_array = np.array([float(i) for i in confile['Comparray']['Xs'].split(',')])
 
 comp_array = np.vstack((Z_array,A_array,XH_array))
 
-Mwant = 0.3
+Mwant = 0.4
 Rwant = 0.33
 
 # m, r, p, l, rho, T, mx = stc.integrate(Mwant, Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 1000)
@@ -37,15 +37,20 @@ Rwant = 0.33
 #print('T', T[-1])
 #print('mx', mx)
 
-test1 = cl.Compute_L(Mwant, Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 10000)
-print(test1)
+# test1 = cl.Compute_L(Mwant, Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 10000)
+# print(test1)
 
-# teff = zms.Teff(Mwant)
+test_masses = np.linspace(0.1, 0.3, 3)
 
-# surf_lum = zms.surface_luminosity(teff,r)
+main_sequence_radii = np.zeros_like(test_masses)
+main_sequence_Teff = np.zeros_like(test_masses)
+main_sequence_Lsurf = np.zeros_like(test_masses)
 
-# print((l-surf_lum) / ac.Lsun)
+for i in range(len(test_masses)):
+    main_sequence_radii[i] = cl.Compute_L(test_masses[i], Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 10000)[0]
+    main_sequence_Teff[i] = zms.Teff(test_masses[i])
+    main_sequence_Lsurf[i] = zms.surface_luminosity(main_sequence_Teff[i], main_sequence_radii[i])
 
-# plt.scatter(np.arange(len(l)),np.log((l-surf_lum) / ac.Lsun))
-
-
+print('R', main_sequence_radii)
+print('Teff', main_sequence_Teff)
+print('Lsurf', main_sequence_Lsurf)
