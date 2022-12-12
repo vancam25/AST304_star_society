@@ -2,11 +2,13 @@ import configparser
 import numpy as np
 import pandas as pds
 import matplotlib.pyplot as plt
+import matplotlib
 
 import structure as stc
 import astro_const as ac
 import Compute_L as cl
 import zams as zms
+import eos
 
 confile = configparser.ConfigParser()
 confile.read('proj_3_config.ini')
@@ -23,6 +25,8 @@ A_array = np.array([int(i) for i in confile['Comparray']['As'].split(',')])
 XH_array = np.array([float(i) for i in confile['Comparray']['Xs'].split(',')])
 
 comp_array = np.vstack((Z_array,A_array,XH_array))
+
+mu = eos.mean_molecular_weight(Z_array, A_array, XH_array)
 
 # Mwant = 0.4
 # Rwant = 0.33
@@ -46,41 +50,59 @@ Rwant = 0.33
 main_sequence_radii = np.zeros_like(test_masses)
 main_sequence_Teff = np.zeros_like(test_masses)
 main_sequence_Lsurf = np.zeros_like(test_masses)
+main_sequence_PC = np.zeros_like(test_masses)
+main_sequence_RhoC = np.zeros_like(test_masses)
+main_sequence_TC = np.zeros_like(test_masses)
 
 for i in range(len(test_masses)):
-    main_sequence_radii[i] = cl.Compute_L(test_masses[i], Rwant, def_delta_m, def_delta_r, def_eta, def_xi, comp_array, def_pp_factor, 10000)[0]
+    main_sequence_radii[i] = cl.Compute_L(test_masses[i], Rwant, def_delta_m, def_delta_r, 
+                                          def_eta, def_xi, comp_array, def_pp_factor, 10000)
     main_sequence_Teff[i] = zms.Teff(test_masses[i])
-    main_sequence_Lsurf[i] = zms.surface_luminosity(main_sequence_Teff[i], main_sequence_radii[i])
+    main_sequence_Lsurf[i] = zms.surface_luminosity(main_sequence_Teff[i], main_sequence_radii[i]*ac.Rsun)/ac.Lsun
+    main_sequence_PC[i], main_sequence_RhoC[i], main_sequence_TC[i] = stc.central_thermal(test_masses[i], main_sequence_radii[i], mu)
 
-print('R', main_sequence_radii)
-print('Teff', main_sequence_Teff)
-print('Lsurf', main_sequence_Lsurf)
+'''
+Plotting
+'''
+fig, (ax1, ax2) = plt.subplots(2,1)
+fig.set_size_inches(6,10)
 
-fig, ax1 = plt.subplots()
+log_10_Teff = np.log10(main_sequence_Teff)
+log_10_Lsurf = np.log10(main_sequence_Lsurf)
 
-ax1.scatter(main_sequence_Teff, main_sequence_Lsurf)
+ax1.scatter(log_10_Teff, log_10_Lsurf, c=test_masses)
 
-ax1.set_xlim(np.max(main_sequence_Teff)*1.2, np.min(main_sequence_Teff)*0.8)
+mass_norm = matplotlib.colors.Normalize(vmin=np.min(test_masses), vmax=np.max(test_masses))
+mass_sm = matplotlib.cm.ScalarMappable(mass_norm, cmap='viridis')
 
-ax1.set_xscale('log')
-ax1.set_yscale('log')
+plt.colorbar(mass_sm, ax=ax1, label='Mass [$M_{\odot}$]')
 
-ax1.set_xlabel('Teff')
-ax1.set_ylabel('Lsurf')
+ax1.set_title("HR Diagram of Low Mass Main Sequence Stars")
+ax1.set_xlabel("$log_{10}(T_{eff}/K)$")
+ax1.set_ylabel("$log_{10}(L/L_{\odot})$")
 
 ax1.grid()
 
-# ax2.scatter(main_sequence_Teff, main_sequence_Lsurf)
+ax1.invert_xaxis()
 
-# ax2.set_xlim(np.max(main_sequence_Teff)*1.2, np.min(main_sequence_Teff)*0.8)
 
-# ax2.set_xscale('log')
-# ax2.set_yscale('log')
+log_10_RhoC = np.log10(main_sequence_RhoC * 0.001) #unit conversion
+log_10_TC = np.log10(main_sequence_TC)
 
-# ax2.set_xlabel('Teff')
-# ax2.set_ylabel('Lsurf')
+ax2.scatter(log_10_RhoC, log_10_TC, c=test_masses)
 
-# ax2.grid()
+mass_norm = matplotlib.colors.Normalize(vmin=np.min(test_masses), vmax=np.max(test_masses))
+mass_sm = matplotlib.cm.ScalarMappable(mass_norm, cmap='viridis')
 
-# fig.savefig('FinalPlots/Mass_Radius_Plot.svg')
-# plt.clf()
+plt.colorbar(mass_sm, ax=ax2, label='Mass [$M_{\odot}$]')
+
+ax2.set_title("LogLog of Central Temperature vs Central Density")
+ax2.set_xlabel("$log_{10}(Rho/g cm^{-3}))$")
+ax2.set_ylabel("$log_{10}(T_{c}/K)$")
+
+ax2.grid()
+
+plt.tight_layout()
+
+fig.savefig('FinalPlots/Part_10_plots.svg')
+plt.clf()

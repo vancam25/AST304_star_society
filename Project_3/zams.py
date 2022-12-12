@@ -5,6 +5,7 @@
 """
 
 import numpy as np
+import astro_const as ac
 from astro_const import fourpi, sigmaSB
 
 def Teff(Mwant):
@@ -29,8 +30,6 @@ def Teff(Mwant):
     masses = np.array([0.1,0.15,0.2,0.3]) # [Msun]
     Teffs = np.array([2800.0,3150.0,3300.0,3400.0]) # [K]
     
-    # fill this out to perform interpolation to find Teff for Mwant
-    
     Teff = np.interp(Mwant, masses, Teffs)
     
     return Teff
@@ -44,10 +43,6 @@ def surface_luminosity(Teff,radius):
         radius [m] ; radius offset, in units of Msolar 
     """
     
-    # fill this in
-    
-    luminosity = fourpi*(radius**2)*sigmaSB*(Teff**4)
-    
-    
+    luminosity = 4*ac.pi*(radius**2)*sigmaSB*(Teff**4)
     
     return luminosity
