@@ -17,13 +17,20 @@ Contents
 5. `Compute_L.py`: A file for computing the luminosity of the stars and finding radius. 
 6. `ode.py`: A module of integration funtions, including fEuler, rk2, and rk4.
 7. `main_code_run.py`: A file where we ran our code to complete the objectives set out by the instructions. 
-8. 
+8. `structure.py`: A module for the structure of the star. 
+9. `reactions_template.py`: A module for the stellar reactions happening inside the star. 
+10. `proj_3_config.ini`: A file of the initial parameters used. 
+11. `additional_funcs.py`: Additional functions used to help make effiencient code for the project. 
+12. `Project3_WriteUp.md`: The final write up of the project. 
+13. `FinalPlots`: A folder holding the final plots, .csv files and excel files of comparison data. 
 
 
 Report/closeout
 ---------------
-1. You can find our write up in ______
+1. You can find our write up in `Project3_WriteUp.md`. 
 2. How to run our code: 
+
+        Run `main_code_run.py` to get the run for parts 2.10, 2.11, and should also be for part 3. Folder `FinalPlots` holds the graph outputs and also the comparisons for part 3. 
 
 
 Resources
