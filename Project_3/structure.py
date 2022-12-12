@@ -246,4 +246,4 @@ def integrate(Mwant, Rwant, delta_m, delta_r, eta, xi, comp_array, pp_factor, ma
             max_step_reached = 1
             raise Exception('too many iterations')
     
-    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], l_step[0:Nsteps], P_c, Rho_c, T_c, Nsteps
+    return m_step[0:Nsteps], r_step[0:Nsteps], p_step[0:Nsteps], l_step[0:Nsteps], P_c, Rho_c, T_c, rho_step[0:Nsteps], t_step[0:Nsteps], Nsteps
