@@ -1,5 +1,6 @@
 import configparser
 import numpy as np
+import pandas as pds
 import matplotlib.pyplot as plt
 import matplotlib
 
@@ -27,6 +28,8 @@ comp_array = np.vstack((Z_array,A_array,XH_array))
 
 mu = eos.mean_molecular_weight(Z_array, A_array, XH_array)
 
+# def_pp_factor = 10**5
+
 def part_10():
     '''
     Code for part 10
@@ -47,6 +50,25 @@ def part_10():
         main_sequence_Teff[i] = zms.Teff(test_masses[i])
         main_sequence_Lsurf[i] = zms.surface_luminosity(main_sequence_Teff[i], main_sequence_radii[i]*ac.Rsun)/ac.Lsun
         main_sequence_PC[i], main_sequence_RhoC[i], main_sequence_TC[i] = stc.central_thermal(test_masses[i], main_sequence_radii[i], mu)
+    
+    '''
+    Saving data for section 3
+    '''
+    full_results_array = np.zeros((len(test_masses),7))
+    
+    full_results_array_labels = np.array(['Radii [solar]','Teff [K]','Lsurf [solar]','Pc','Rhoc','Tc [K]','Mass [solar]'])
+    
+    full_results_array[:,0] = main_sequence_radii
+    full_results_array[:,1] = main_sequence_Teff
+    full_results_array[:,2] = main_sequence_Lsurf
+    full_results_array[:,3] = main_sequence_PC
+    full_results_array[:,4] = main_sequence_RhoC
+    full_results_array[:,5] = main_sequence_TC
+    full_results_array[:,6] = test_masses
+    
+    full_results_data_frame = pds.DataFrame(full_results_array, columns=full_results_array_labels)
+    
+    full_results_data_frame.to_csv('FinalPlots/integrate_results_pp_f_1.csv', index=False)
     
     '''
     Plotting for part 10
@@ -91,7 +113,7 @@ def part_10():
     
     plt.tight_layout()
     
-    fig.savefig('FinalPlots/Part_10_plots.svg')
+    fig.savefig('FinalPlots/Section_3_a_plots.svg')
     plt.clf()
     
     return
@@ -143,12 +165,12 @@ def part_11():
     print('At this radius the following fraction of mass is enclosed:'
           , np.round(m_90,2), '[m/M]')
     
-    fig.savefig('FinalPlots/Part_11_plots.svg')
+    fig.savefig('FinalPlots/Section_3_b_plots.svg')
     plt.clf()
     
     return
 
-# part_10()
+part_10()
     
-part_11()
+# part_11()
 
